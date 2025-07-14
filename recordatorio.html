@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Recordatorio 24h - NutriApp</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+</head>
+<body>
+  <div class="container">
+    <h2 class="mt-5">Recordatorio 24 Horas</h2>
+    <form id="recordatorio-form">
+      <div class="mb-3">
+        <label class="form-label">Desayuno</label>
+        <textarea class="form-control" id="desayuno" rows="2"></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Almuerzo</label>
+        <textarea class="form-control" id="almuerzo" rows="2"></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Cena</label>
+        <textarea class="form-control" id="cena" rows="2"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Guardar Recordatorio</button>
+    </form>
+  </div>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>

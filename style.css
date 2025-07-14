@@ -1,0 +1,25 @@
+/* style.css */
+body {
+  background-image: url('img/istockphoto-2204376826-612x612.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #fff; /* texto blanco para contraste */
+  background-color: #f4f4f4; /* fallback por si no carga la imagen */
+}
+
+.container {
+  max-width: 600px;
+  background: rgba(0, 0, 0, 0.5); /* fondo semitransparente para mejor lectura */
+  padding: 2rem;
+  margin-top: 3rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3); /* sombra más visible */
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #fff; /* para que el título contraste con fondo oscuro */
+}

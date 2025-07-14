@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vitaminas en el Embarazo - NutriApp</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+</head>
+<body class="bg-light">
+  <div class="container mt-5">
+    <h1>Vitaminas y Minerales en el Embarazo</h1>
+
+    <div class="mb-4">
+      <label for="trimestre" class="form-label">Selecciona el trimestre</label>
+      <select id="trimestre" class="form-select">
+        <option value="">-- Selecciona --</option>
+        <option value="1">Primer trimestre</option>
+        <option value="2">Segundo trimestre</option>
+        <option value="3">Tercer trimestre</option>
+      </select>
+    </div>
+
+    <div id="recomendaciones" class="p-3 bg-white border rounded"></div>
+  </div>
+
+  <script>
+    const recomendaciones = {
+      1: {
+        titulo: "Primer Trimestre",
+        vitaminas: [
+          {
+            nombre: "Ácido fólico",
+            cantidad: "400 mcg diarios (prevención de defectos del tubo neural).",
+            alimentos: ["Espinaca", "Brócoli", "Lentejas", "Naranjas", "Aguacate"]
+          },
+          {
+            nombre: "Hierro",
+            cantidad: "27 mg diarios (apoyo al aumento del volumen sanguíneo).",
+            alimentos: ["Carne roja magra", "Pollo", "Pescado", "Legumbres", "Espinaca"]
+          },
+          {
+            nombre: "Vitamina B6",
+            cantidad: "1.9 mg diarios (reducción de náuseas).",
+            alimentos: ["Plátano", "Aguacate", "Pechuga de pollo", "Pescado", "Patata"]
+          },
+          {
+            nombre: "Vitamina D",
+            cantidad: "600 UI diarios (apoyo al desarrollo óseo).",
+            alimentos: ["Pescado graso", "Yema de huevo", "Hongos", "Leche fortificada", "Queso"]
+          },
+          {
+            nombre: "Zinc",
+            cantidad: "11 mg diarios (apoyo al desarrollo celular).",
+            alimentos: ["Carne roja", "Mariscos", "Legumbres", "Nueces", "Cereales integrales"]
+          }
+        ]
+      },
+      2: {
+        titulo: "Segundo Trimestre",
+        vitaminas: [
+          {
+            nombre: "Hierro",
+            cantidad: "27 mg diarios (crecimiento fetal y aumento demanda).",
+            alimentos: ["Carne roja magra", "Pollo", "Pescado", "Legumbres", "Espinaca"]
+          },
+          {
+            nombre: "Calcio",
+            cantidad: "1000 mg diarios (formación de huesos y dientes).",
+            alimentos: ["Leche", "Yogur", "Queso", "Sardinas", "Brócoli"]
+          },
+          {
+            nombre: "Vitamina D",
+            cantidad: "600 UI diarios (absorción de calcio).",
+            alimentos: ["Pescado graso", "Yema de huevo", "Hongos", "Leche fortificada", "Queso"]
+          },
+          {
+            nombre: "Proteínas",
+            cantidad: "71 gramos diarios (crecimiento fetal y tejidos maternos).",
+            alimentos: ["Carne magra", "Pescado", "Huevos", "Legumbres", "Frutos secos"]
+          },
+          {
+            nombre: "Ácido fólico",
+            cantidad: "400 mcg diarios (mantener consumo).",
+            alimentos: ["Espinaca", "Brócoli", "Lentejas", "Naranjas", "Aguacate"]
+          }
+        ]
+      },
+      3: {
+        titulo: "Tercer Trimestre",
+        vitaminas: [
+          {
+            nombre: "Hierro",
+            cantidad: "27 mg diarios (máxima demanda, prevención anemia).",
+            alimentos: ["Carne roja magra", "Pollo", "Pescado", "Legumbres", "Espinaca"]
+          },
+          {
+            nombre: "Calcio",
+            cantidad: "1000 mg diarios (continuar soporte óseo).",
+            alimentos: ["Leche", "Yogur", "Queso", "Sardinas", "Brócoli"]
+          },
+          {
+            nombre: "Omega-3 (DHA)",
+            cantidad: "200-300 mg diarios (desarrollo cerebral y visual).",
+            alimentos: ["Pescado azul", "Nueces", "Semillas de chía", "Aceite de linaza", "Huevos enriquecidos"]
+          },
+          {
+            nombre: "Vitamina K",
+            cantidad: "90 mcg diarios (coagulación sanguínea).",
+            alimentos: ["Verduras de hoja verde", "Brócoli", "Col rizada", "Espinaca", "Lechuga"]
+          },
+          {
+            nombre: "Vitamina C",
+            cantidad: "85 mg diarios (absorción de hierro y refuerzo inmune).",
+            alimentos: ["Naranjas", "Kiwi", "Fresas", "Pimientos", "Tomates"]
+          }
+        ]
+      }
+    };
+
+    const selectTrimestre = document.getElementById('trimestre');
+    const contenedor = document.getElementById('recomendaciones');
+
+    selectTrimestre.addEventListener('change', () => {
+      const val = selectTrimestre.value;
+      if (val && recomendaciones[val]) {
+        const rec = recomendaciones[val];
+        let html = `<h4>${rec.titulo}</h4><ul>`;
+        rec.vitaminas.forEach(v => {
+          html += `<li><strong>${v.nombre}:</strong> ${v.cantidad}<br><em>Alimentos ricos:</em> ${v.alimentos.join(', ')}</li>`;
+        });
+        html += '</ul>';
+        contenedor.innerHTML = html;
+      } else {
+        contenedor.innerHTML = '';
+      }
+    });
+  </script>
+</body>
+</html>
