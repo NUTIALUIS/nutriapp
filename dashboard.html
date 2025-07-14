@@ -17,7 +17,7 @@
       margin-bottom: 30px;
       text-align: center;
     }
-    #contenidoVitaminas, #contenidoDatos {
+    #contenidoVitaminas {
       max-height: 400px;
       overflow-y: auto;
       margin-top: 20px;
@@ -34,7 +34,7 @@
     <h1>Bienvenido a NutriApp</h1>
 
     <div class="d-grid gap-3 mb-4">
-      <button id="btnDatos" class="btn btn-primary btn-lg">Datos Personales e IMC</button>
+      <a href="datos.html" class="btn btn-primary btn-lg">Datos Personales e IMC</a>
       <a href="antropometria.html" class="btn btn-primary btn-lg">Datos Antropométricos</a>
       <a href="ia_clinica.html" class="btn btn-primary btn-lg">IA Clínica</a>
       <a href="planificador_dietas.html" class="btn btn-primary btn-lg">Planificador de Dietas</a>
@@ -42,43 +42,7 @@
       <button id="btnVitaminasEmbarazo" class="btn btn-info btn-lg">Vitaminas en Embarazo</button>
     </div>
 
-    <div id="contenidoDatos">
-      <h3>Ingrese sus datos personales</h3>
-      <form id="formDatos">
-        <div class="mb-3">
-          <label for="nombre" class="form-label">Nombre completo</label>
-          <input type="text" id="nombre" class="form-control" required />
-        </div>
-        <div class="mb-3">
-          <label for="edad" class="form-label">Edad</label>
-          <input type="number" id="edad" class="form-control" min="0" required />
-        </div>
-        <div class="mb-3">
-          <label for="sexo" class="form-label">Sexo</label>
-          <select id="sexo" class="form-select" required>
-            <option value="">Seleccione</option>
-            <option value="hombre">Hombre</option>
-            <option value="mujer">Mujer</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label for="peso" class="form-label">Peso (kg)</label>
-          <input type="number" id="peso" class="form-control" step="0.1" min="1" required />
-        </div>
-        <div class="mb-3">
-          <label for="talla" class="form-label">Talla (cm)</label>
-          <input type="number" id="talla" class="form-control" step="0.1" min="30" required />
-        </div>
-        <div class="mb-3">
-          <label for="antecedentes" class="form-label">Antecedentes médicos</label>
-          <textarea id="antecedentes" class="form-control" rows="3" placeholder="Opcional"></textarea>
-        </div>
-        <button type="submit" class="btn btn-success">Calcular IMC</button>
-      </form>
-      <div id="resultadoIMC" class="mt-3"></div>
-    </div>
-
-    <div id="contenidoVitaminas" style="display:none;">
+    <div id="contenidoVitaminas">
       <!-- Aquí se mostrará la info de vitaminas -->
     </div>
   </div>
@@ -86,16 +50,8 @@
   <script>
     const btnVitaminas = document.getElementById('btnVitaminasEmbarazo');
     const contenedorVitaminas = document.getElementById('contenidoVitaminas');
-    const btnDatos = document.getElementById('btnDatos');
-    const contenedorDatos = document.getElementById('contenidoDatos');
 
     btnVitaminas.addEventListener('click', () => {
-      // Oculta contenidoDatos si está abierto
-      if (contenedorDatos.style.display === 'block') {
-        contenedorDatos.style.display = 'none';
-        btnDatos.textContent = 'Datos Personales e IMC';
-      }
-
       if (contenedorVitaminas.style.display === 'block') {
         contenedorVitaminas.style.display = 'none';
         btnVitaminas.textContent = 'Vitaminas en Embarazo';
@@ -117,7 +73,7 @@
 
           <h4>Segundo Trimestre</h4>
           <ul>
-            <li><strong>Ácido Fólico:</strong> 600 mcg diarios. Alimentos ricos: (igual al primero).</li>
+            <li><strong>Ácido Fólico:</strong> 600 mcg diarios.</li>
             <li><strong>Hierro:</strong> 27 mg diarios.</li>
             <li><strong>Calcio:</strong> 1000 mg diarios.</li>
             <li><strong>Vitamina D:</strong> 600 UI diarios.</li>
@@ -135,51 +91,8 @@
         `;
       }
     });
-
-    btnDatos.addEventListener('click', () => {
-      // Oculta contenidoVitaminas si está abierto
-      if (contenedorVitaminas.style.display === 'block') {
-        contenedorVitaminas.style.display = 'none';
-        btnVitaminas.textContent = 'Vitaminas en Embarazo';
-      }
-      
-      if (contenedorDatos.style.display === 'block') {
-        contenedorDatos.style.display = 'none';
-        btnDatos.textContent = 'Datos Personales e IMC';
-      } else {
-        contenedorDatos.style.display = 'block';
-        btnDatos.textContent = 'Ocultar Datos Personales e IMC';
-      }
-    });
-
-    document.getElementById('formDatos').addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const peso = parseFloat(document.getElementById('peso').value);
-      const tallaCm = parseFloat(document.getElementById('talla').value);
-      const tallaM = tallaCm / 100;
-
-      const imc = peso / (tallaM * tallaM);
-      let clasificacion = '';
-
-      if (imc < 18.5) {
-        clasificacion = 'Bajo peso';
-      } else if (imc < 25) {
-        clasificacion = 'Peso normal';
-      } else if (imc < 30) {
-        clasificacion = 'Sobrepeso';
-      } else {
-        clasificacion = 'Obesidad';
-      }
-
-      document.getElementById('resultadoIMC').innerHTML = `
-        <h4>Resultado IMC</h4>
-        <p>Tu IMC es: <strong>${imc.toFixed(2)}</strong> kg/m²</p>
-        <p>Clasificación: <strong>${clasificacion}</strong></p>
-      `;
-    });
   </script>
-  
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
