@@ -2,36 +2,146 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>IA Clínica - NutriApp</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <title>Gestión Clínica Nutricional</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+    h2 { color: #2563eb; }
+    h3 { margin-top: 20px; }
+    .grupo { margin-bottom: 20px; }
+    .protocolo { background: #ecfdf5; border-left: 4px solid #22c55e; padding: 10px; margin-bottom: 10px; border-radius: 4px; }
+  </style>
 </head>
-<body class="bg-light">
-  <div class="container mt-5">
-    <h1>IA Clínica - Recomendaciones Nutricionales</h1>
+<body>
+  <h2>Selección de condiciones médicas</h2>
 
-    <form id="ia-form" class="mb-4">
-      <label for="condiciones" class="form-label">Seleccione condiciones clínicas (puede seleccionar varias):</label>
-      <select id="condiciones" class="form-select" multiple required size="6">
-        <option value="cancer">Cáncer (general)</option>
-        <option value="diabetes">Diabetes</option>
-        <option value="hta">Hipertensión Arterial (HTA)</option>
-        <option value="gastritis">Gastritis</option>
-        <option value="hipotiroidismo">Hipotiroidismo</option>
-        <option value="hipertiroidismo">Hipertiroidismo</option>
-      </select>
+  <div id="seleccion"></div>
 
-      <div class="mt-3 mb-3">
-        <label for="kcalUsuario" class="form-label">Ingrese las kcal diarias deseadas</label>
-        <input type="number" id="kcalUsuario" class="form-control" placeholder="Ejemplo: 2000" required min="1000" max="5000" />
-      </div>
+  <hr>
 
-      <button type="submit" class="btn btn-primary">Generar Recomendación</button>
-    </form>
+  <h2>Protocolos Nutricionales Sugeridos</h2>
+  <div id="protocolos"></div>
 
-    <div id="resultado" class="bg-white p-4 rounded shadow-sm"></div>
-  </div>
+  <script>
+    const condiciones = {
+      cronicas: [
+        "Hipertensión arterial",
+        "Diabetes tipo 1",
+        "Diabetes tipo 2",
+        "Dislipidemias",
+        "Obesidad / Sobrepeso",
+        "Insuficiencia renal crónica",
+        "Síndrome metabólico",
+        "Hipotiroidismo",
+        "Hígado graso",
+      ],
+      agudas: [
+        "Gastritis",
+        "Colitis",
+        "SII",
+        "Alergias / Intolerancias",
+        "Estreñimiento",
+        "Diarrea",
+        "Migrañas alimentarias",
+      ],
+      postquirurgicos: [
+        "Cirugía de vesícula",
+        "Apendicectomía",
+        "Fracturas / trauma",
+        "Cirugías ginecológicas",
+        "Cirugía bariátrica",
+      ],
+      especiales: [
+        "Embarazo / Lactancia",
+        "Niños",
+        "Adultos mayores",
+        "Deportistas - Fútbol",
+        "Deportistas - Pesas",
+        "Deportistas - Básquet",
+        "Deportistas - Tenis",
+        "Condiciones neurológicas - Parkinson",
+        "Condiciones neurológicas - Alzheimer",
+        "Condiciones neurológicas - Esclerosis múltiple",
+        "Condiciones neurológicas - Parálisis cerebral",
+      ],
+    };
 
-  <script src="ia_clinica.js"></script>
+    const protocolos = {
+      "Hipertensión arterial": "Dieta hiposódica, rica en potasio natural, evitar embutidos y enlatados.",
+      "Diabetes tipo 1": "Control de carbohidratos, insulina según indicación.",
+      "Diabetes tipo 2": "Dieta hipoglucémica, controlar índice glucémico, repartir carbohidratos complejos.",
+      "Dislipidemias": "Reducir grasas saturadas, aumentar omega 3 y fibra soluble.",
+      "Obesidad / Sobrepeso": "Dieta hipocalórica, fomentar actividad física, control de porciones.",
+      "Insuficiencia renal crónica": "Dieta baja en potasio, fósforo y proteínas según estadio. Restringir líquidos si aplica.",
+      "Síndrome metabólico": "Dieta balanceada baja en azúcares simples, aumentar fibra, control de peso.",
+      "Hipotiroidismo": "Aporte adecuado de yodo y selenio, evitar exceso de soja y crucíferas crudas.",
+      "Hígado graso": "Dieta baja en grasas saturadas y azúcares, controlar peso, evitar alcohol.",
+      "Gastritis": "Evitar alimentos ácidos, picantes, café y alcohol. Fraccionar comidas.",
+      "Colitis": "Evitar irritantes, aumentar fibra soluble, fraccionar comidas.",
+      "SII": "Dieta baja en FODMAP, control de estrés, registro de síntomas.",
+      "Alergias / Intolerancias": "Identificar y excluir alimentos desencadenantes, leer etiquetas, sustitutos adecuados.",
+      "Estreñimiento": "Aumentar fibra, hidratación adecuada, fomentar actividad física.",
+      "Diarrea": "Hidratación oral, dieta astringente, evitar irritantes y lácteos enteros.",
+      "Migrañas alimentarias": "Identificar desencadenantes, evitar alimentos procesados, fraccionar comidas.",
+      "Cirugía de vesícula": "Dieta baja en grasas, fraccionar comidas, evitar irritantes.",
+      "Apendicectomía": "Dieta blanda postquirúrgica, reintroducción gradual de fibra, hidratación.",
+      "Fracturas / trauma": "Aporte adecuado de proteínas, calcio y vitamina D, hidratación.",
+      "Cirugías ginecológicas": "Dieta equilibrada rica en hierro y proteínas, control de estreñimiento.",
+      "Cirugía bariátrica": "Dieta fraccionada, control de proteínas, suplementos vitamínicos según indicación.",
+      "Embarazo / Lactancia": "Aporte adecuado de calorías y nutrientes, hidratación, control de anemia.",
+      "Niños": "Dieta equilibrada, variedad de alimentos, evitar ultraprocesados.",
+      "Adultos mayores": "Dieta equilibrada adaptada a necesidades, buena hidratación, textura adecuada.",
+      "Deportistas - Fútbol": "Alto consumo de carbohidratos complejos, hidratación constante, proteínas para recuperación.",
+      "Deportistas - Pesas": "Aporte elevado de proteínas de calidad, control de carbohidratos, suplementos si es necesario.",
+      "Deportistas - Básquet": "Carbohidratos para resistencia, snacks pre y post entrenamiento, hidratación adecuada.",
+      "Deportistas - Tenis": "Hidratación intensiva, carbohidratos de absorción rápida y lenta, sales minerales.",
+      "Condiciones neurológicas - Parkinson": "Fraccionar comidas, dieta rica en fibra para estreñimiento, adecuada hidratación.",
+      "Condiciones neurológicas - Alzheimer": "Alimentos fáciles de masticar y digerir, control de textura, supervisar hidratación.",
+      "Condiciones neurológicas - Esclerosis múltiple": "Aporte suficiente de energía, control de peso, vitaminas y minerales clave.",
+      "Condiciones neurológicas - Parálisis cerebral": "Adaptar consistencia de alimentos, dieta alta en nutrientes, prevenir estreñimiento.",
+    };
+
+    const seleccionDiv = document.getElementById('seleccion');
+    const protocolosDiv = document.getElementById('protocolos');
+
+    Object.entries(condiciones).forEach(([grupo, lista]) => {
+      const grupoDiv = document.createElement('div');
+      grupoDiv.className = 'grupo';
+      const h3 = document.createElement('h3');
+      h3.textContent = grupo.charAt(0).toUpperCase() + grupo.slice(1);
+      grupoDiv.appendChild(h3);
+
+      lista.forEach(cond => {
+        const label = document.createElement('label');
+        label.style.display = 'block';
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.value = cond;
+
+        checkbox.addEventListener('change', () => mostrarProtocolos());
+
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(' ' + cond));
+        grupoDiv.appendChild(label);
+      });
+
+      seleccionDiv.appendChild(grupoDiv);
+    });
+
+    function mostrarProtocolos() {
+      const checked = document.querySelectorAll('#seleccion input:checked');
+      protocolosDiv.innerHTML = '';
+      if (checked.length === 0) {
+        protocolosDiv.textContent = 'Selecciona una o más condiciones para ver sugerencias...';
+        return;
+      }
+      checked.forEach(cb => {
+        const div = document.createElement('div');
+        div.className = 'protocolo';
+        div.innerHTML = `<strong>${cb.value}</strong><br>${protocolos[cb.value] || 'Protocolo pendiente.'}`;
+        protocolosDiv.appendChild(div);
+      });
+    }
+  </script>
 </body>
 </html>
