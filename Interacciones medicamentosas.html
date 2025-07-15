@@ -1,0 +1,191 @@
+<!DOCTYPE html><html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Interacciones Medicamentosas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f8f8;
+      padding: 2rem;
+      color: #222;
+    }
+    h1 {
+      color: #004080;
+    }
+    textarea {
+      width: 100%;
+      max-width: 600px;
+      height: 100px;
+      font-size: 1rem;
+      padding: 0.5rem;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      background-color: #004080;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    .resultado {
+      margin-top: 2rem;
+    }
+    .medicamento {
+      background: #fff;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-left: 5px solid #007acc;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    .medicamento p {
+      margin: 0.3rem 0;
+      line-height: 1.4;
+    }
+    .emoji {
+      font-weight: bold;
+    }
+    table {
+      margin-top: 3rem;
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 600px;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 0.5rem;
+      text-align: left;
+    }
+    th {
+      background-color: #004080;
+      color: white;
+    }
+  </style>
+</head>
+<body> <h1>  Interacciones Medicamentosas</h1>
+  <p>Escribe hasta 10 medicamentos separados por comas:</p>
+  <textarea id="entrada" placeholder="Ej: enalapril, warfarina, metformina"></textarea><br>
+  <button onclick="mostrarInteracciones()">Mostrar interacciones</button> <div class="resultado" id="resultado"></div> <h2>  Base de Datos Nutricional</h2>
+  </table> <script>
+    const interacciones = {
+  "enalapril": {
+    interaccion: "No combinar con alimentos muy ricos en potasio (ej. plátano, aguacate excesivo)",
+    recomendacion: "Moderar potasio, controlar función renal, evitar suplementos sin control"
+  },
+  "warfarina": {
+    interaccion: "Vitamina K en alimentos (ej. brócoli, coliflor, espinaca) puede reducir su efecto anticoagulante",
+    recomendacion: "Mantener ingesta constante de vitamina K, evitar fluctuaciones bruscas"
+  },
+  "metformina": {
+    interaccion: "Alcohol puede potenciar acidosis láctica, y reducir absorción de B12",
+    recomendacion: "Evitar alcohol; considerar suplementar vitamina B12 a largo plazo"
+  },
+  "atorvastatina": {
+    interaccion: "Jugo de toronja (pomelo) puede aumentar concentración plasmática y toxicidad hepática",
+    recomendacion: "Evitar pomelo; controlar función hepática"
+  },
+  "furosemida": {
+    interaccion: "Riesgo de deshidratación con ingesta reducida de agua o alta de sal",
+    recomendacion: "Mantener hidratación adecuada; controlar electrolitos"
+  },
+  "levotiroxina": {
+    interaccion: "Café, lácteos, soja, suplementos de hierro o calcio reducen su absorción",
+    recomendacion: "Tomar en ayunas; esperar 30–60 minutos antes del desayuno"
+  },
+  "simvastatina": {
+    interaccion: "Pomelo (toronja) puede aumentar toxicidad",
+    recomendacion: "Evitar jugo de toronja; tomar en la noche"
+  },
+  "losartán": {
+    interaccion: "Exceso de potasio en alimentos (plátano, sustitutos de sal) puede causar hiperpotasemia",
+    recomendacion: "Controlar potasio; monitorear función renal"
+  },
+  "omeprazol": {
+    interaccion: "Reducción de absorción de B12 y hierro a largo plazo",
+    recomendacion: "Controlar niveles en tratamientos prolongados"
+  },
+  "clopidogrel": {
+    interaccion: "Alcohol y ajo en exceso aumentan riesgo de sangrado",
+    recomendacion: "Evitar alcohol y suplementos herbales anticoagulantes"
+  },
+  "prednisona": {
+    interaccion: "Aumenta glucosa, puede afectar absorción de calcio",
+    recomendacion: "Dieta baja en azúcares simples, adecuada en calcio y proteínas"
+  },
+  "glimepirida": {
+    interaccion: "Alcohol puede inducir hipoglucemia severa",
+    recomendacion: "Evitar alcohol; tomar con alimentos"
+  },
+  "insulina nph": {
+    interaccion: "Ayuno o consumo excesivo de alcohol puede causar hipoglucemia",
+    recomendacion: "Nunca omitir comidas; evitar alcohol"
+  },
+  "gabapentina": {
+    interaccion: "Alcohol potencia efectos sedantes",
+    recomendacion: "Evitar alcohol; tomar con alimentos si hay molestias gástricas"
+  },
+  "fenitoína": {
+    interaccion: "Lácteos, calcio, alcohol reducen absorción y potencia",
+    recomendacion: "Tomar separado de lácteos; evitar alcohol"
+  },
+  "ciprofloxacina": {
+    interaccion: "Leche, calcio y antiácidos disminuyen su absorción",
+    recomendacion: "Evitar tomar con lácteos o suplementos minerales"
+  },
+  "doxiciclina": {
+    interaccion: "Lácteos y minerales interfieren con absorción",
+    recomendacion: "No tomar con leche; evitar suplementos durante tratamiento"
+  },
+  "sertralina": {
+    interaccion: "Alcohol intensifica efectos depresores del sistema nervioso",
+    recomendacion: "Evitar alcohol; tomar con alimentos si hay náuseas"
+  },
+  "fluoxetina": {
+    interaccion: "Alcohol y cafeína pueden generar ansiedad o taquicardia",
+    recomendacion: "Limitar cafeína; evitar alcohol"
+  },
+  "carvedilol": {
+    interaccion: "Alcohol puede causar hipotensión severa",
+    recomendacion: "Evitar alcohol; tomar con comida para reducir hipotensión"
+  },
+  "espironolactona": {
+    interaccion: "Alimentos ricos en potasio pueden causar hiperpotasemia",
+    recomendacion: "Evitar plátano, aguacate, tomate en exceso"
+  }
+};
+ 
+    function mostrarInteracciones() {
+      const entrada = document.getElementById("entrada").value.toLowerCase().split(",").map(m => m.trim());
+      const resultado = document.getElementById("resultado");
+      resultado.innerHTML = "";
+
+      if (entrada.length > 10) {
+        resultado.innerHTML = "<p style='color:red;'>  Solo puedes ingresar hasta 10 medicamentos.</p>";
+        return;
+      }
+
+      entrada.forEach(nombre => {
+        const info = interacciones[nombre];
+        if (info) {
+          resultado.innerHTML += `
+            <div class="medicamento">
+              <p class="emoji">  Medicamento: <strong>${nombre.charAt(0).toUpperCase() + nombre.slice(1)}</strong></p>
+              <p class="emoji">  Interacción: ${info.interaccion}</p>
+              <p class="emoji">  Recomendación: ${info.recomendacion}</p>
+            </div>
+          `;
+        } else {
+          resultado.innerHTML += `
+            <div class="medicamento">
+              <p class="emoji">  Medicamento: <strong>${nombre}</strong></p>
+              <p style="color:orange;">  No se encontró información de interacción para este medicamento.</p>
+            </div>
+          `;
+        }
+      });
+    }
+  </script></body>
+</html>
