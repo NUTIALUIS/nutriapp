@@ -1,43 +1,437 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Enfermedades y Recomendaciones - NutriApp</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📋 Enfermedades y Recomendaciones - Consultorio ObstNut</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .card {
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+      border: 0;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .card-header {
+      background: linear-gradient(90deg, #4338ca, #7c3aed);
+      color: white;
+      font-weight: 600;
+      padding: 25px;
+      text-align: center;
+    }
+    .form-label {
+      font-weight: 500;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .form-label i {
+      color: #7c3aed;
+    }
+    .btn-primary {
+      background: #7c3aed;
+      border: none;
+      padding: 14px 32px;
+      font-weight: 600;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      background: #6d28d9;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+    }
+    .btn-success {
+      background: #10b981;
+      border: none;
+      padding: 12px 24px;
+      font-weight: 600;
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      display: none;
+    }
+    .btn-success:hover {
+      background: #059669;
+      transform: translateY(-2px);
+    }
+    .btn-imprimir {
+      background: #2196f3;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      margin-top: 20px;
+    }
+    .resultado-card {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      margin-top: 30px;
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .enfermedad-tag {
+      display: inline-block;
+      background: #ede9fe;
+      color: #5b21b6;
+      padding: 6px 12px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      margin: 5px;
+      font-weight: 500;
+    }
+    .recomendacion-section {
+      background: #f9fafb;
+      border-left: 4px solid #7c3aed;
+      padding: 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 20px 0;
+    }
+    .recomendacion-section h5 {
+      color: #4338ca;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: #666;
+      font-size: 0.9rem;
+      padding: 20px;
+    }
+    .alert-custom {
+      border-radius: 12px;
+      font-weight: 500;
+    }
+    .select-multiple {
+      border-radius: 12px;
+      border: 2px solid #e5e7eb;
+    }
+    .select-multiple:focus {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+    }
+    .input-calorias {
+      border-radius: 12px;
+      border: 2px solid #e5e7eb;
+    }
+    .input-calorias:focus {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+    }
+    @media print {
+      body {
+        background: white;
+        padding: 20px;
+      }
+      .btn-imprimir, .btn-success, footer {
+        display: none !important;
+      }
+      .card, .resultado-card {
+        box-shadow: none !important;
+        border: 1px solid #ddd;
+      }
+      .resultado-card {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
 </head>
-<body class="bg-light">
-  <div class="container mt-4">
-    <h2>Enfermedades y Recomendaciones</h2>
-    <form id="enfermedades-form">
-      <div class="mb-3">
-        <label for="enfermedades" class="form-label">Selecciona enfermedades (puedes elegir varias)</label>
-        <select id="enfermedades" class="form-select" multiple required size="7">
-          <option value="cancer">Cáncer (general)</option>
-          <option value="diabetes">Diabetes</option>
-          <option value="hta">Hipertensión Arterial (HTA)</option>
-          <option value="gastritis">Gastritis</option>
-          <option value="hipotiroidismo">Hipotiroidismo</option>
-          <option value="hipertiroidismo">Hipertiroidismo</option>
-          <option value="obesidad">Obesidad</option>
-          <option value="sindrome_metabolico">Síndrome Metabólico</option>
-        </select>
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9">
+        <div class="card">
+          <div class="card-header">
+            <h1 class="mb-2">📋 Enfermedades y Recomendaciones Nutricionales</h1>
+            <p class="mb-0 opacity-75">Personaliza el plan según condiciones médicas y necesidades calóricas</p>
+          </div>
+          <div class="card-body p-4">
+
+            <div class="alert alert-info alert-custom" role="alert">
+              <i class="fas fa-info-circle"></i> <strong>Selecciona una o más enfermedades</strong> y define las calorías diarias para generar recomendaciones personalizadas.
+            </div>
+
+            <form id="enfermedades-form">
+              <div class="mb-4">
+                <label for="enfermedades" class="form-label">
+                  <i class="fas fa-disease"></i> Selecciona enfermedades (puedes elegir varias)
+                </label>
+                <select id="enfermedades" class="form-select select-multiple" multiple required size="8">
+                  <option value="cancer">Cáncer (general)</option>
+                  <option value="diabetes">Diabetes</option>
+                  <option value="hta">Hipertensión Arterial (HTA)</option>
+                  <option value="gastritis">Gastritis</option>
+                  <option value="hipotiroidismo">Hipotiroidismo</option>
+                  <option value="hipertiroidismo">Hipertiroidismo</option>
+                  <option value="obesidad">Obesidad</option>
+                  <option value="sindrome_metabolico">Síndrome Metabólico</option>
+                </select>
+                <div class="form-text">
+                  <i class="fas fa-mouse-pointer"></i> Mantén presionada la tecla Ctrl (o Cmd en Mac) para seleccionar múltiples opciones.
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="kcal" class="form-label">
+                  <i class="fas fa-fire"></i> Calorías diarias deseadas
+                </label>
+                <input type="number" id="kcal" class="form-control input-calorias" placeholder="Ejemplo: 2000" min="1000" max="4000" required />
+                <div class="form-text">
+                  <i class="fas fa-info-circle"></i> Rango recomendado: 1000 - 4000 kcal/día
+                </div>
+              </div>
+
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg">
+                  <i class="fas fa-magic"></i> Generar Recomendaciones Personalizadas
+                </button>
+              </div>
+            </form>
+
+            <!-- Resultado -->
+            <div id="resultado" class="resultado-card">
+              <div class="text-center mb-4">
+                <h2 class="mb-3">🎯 Recomendaciones Nutricionales Personalizadas</h2>
+                <div id="enfermedades-seleccionadas"></div>
+                <div class="mt-2">
+                  <span class="badge bg-primary">⚡ <span id="calorias-mostradas"></span> kcal/día</span>
+                </div>
+              </div>
+
+              <div id="recomendaciones-contenido"></div>
+
+              <div class="text-center mt-4">
+                <button onclick="window.print()" class="btn btn-imprimir">
+                  <i class="fas fa-print"></i> Imprimir Recomendaciones
+                </button>
+              </div>
+            </div>
+
+            <!-- Botón para ir al planificador -->
+            <div class="text-center mt-4">
+              <a href="#" id="enviarDieta" class="btn btn-success btn-lg">
+                <i class="fas fa-clipboard-list"></i> Enviar a Planificador de Dietas
+              </a>
+            </div>
+
+          </div>
+        </div>
       </div>
+    </div>
 
-      <div class="mb-3">
-        <label for="kcal" class="form-label">Calorías diarias deseadas</label>
-        <input type="number" id="kcal" class="form-control" placeholder="Ejemplo: 2000" min="1000" max="4000" required />
-      </div>
-
-      <button type="submit" class="btn btn-primary">Generar Recomendaciones</button>
-    </form>
-
-    <div id="resultado" class="mt-4"></div>
-
-    <!-- Botón para ir al planificador con la dieta recomendada -->
-    <a href="#" id="enviarDieta" class="btn btn-success mt-3" style="display: none;">Enviar a Planificador</a>
+    <footer>
+      <p><i class="fas fa-heart" style="color:#7c3aed;"></i> © 2025 Consultorio ObstNut — Atención nutricional personalizada</p>
+    </footer>
   </div>
 
-  <script src="enfermedades.js"></script>
+  <script>
+    // Base de datos de recomendaciones
+    const recomendacionesDB = {
+      cancer: {
+        nombre: "Cáncer",
+        icono: "fas fa-crosshairs",
+        color: "#dc2626",
+        recomendaciones: [
+          "✅ Priorizar alimentos ricos en antioxidantes (frutos rojos, vegetales de hoja verde, té verde).",
+          "✅ Aumentar proteínas de alta calidad (pollo, pescado, huevos, legumbres) para mantener masa muscular.",
+          "✅ Fraccionar comidas en 5-6 tomas diarias para mejorar tolerancia.",
+          "✅ Hidratación constante (agua, caldos, infusiones).",
+          "✅ Evitar alimentos procesados, azúcares añadidos y grasas trans.",
+          "✅ Suplementar según indicación médica (proteínas, omega-3, vitaminas)."
+        ],
+        distribucion: "55% Carbohidratos - 25% Proteínas - 20% Grasas"
+      },
+      diabetes: {
+        nombre: "Diabetes",
+        icono: "fas fa-prescription-bottle-alt",
+        color: "#ea580c",
+        recomendaciones: [
+          "✅ Control estricto de carbohidratos (contar gramos o raciones).",
+          "✅ Priorizar carbohidratos de bajo índice glucémico (avena, quinoa, legumbres, frutas enteras).",
+          "✅ Distribuir carbohidratos en todas las comidas (evitar concentrarlos).",
+          "✅ Incluir proteínas magras y grasas saludables en cada comida para estabilizar glucemia.",
+          "✅ Evitar azúcares añadidos, jugos y bebidas azucaradas.",
+          "✅ Ejercicio regular para mejorar sensibilidad a la insulina."
+        ],
+        distribucion: "45% Carbohidratos - 25% Proteínas - 30% Grasas"
+      },
+      hta: {
+        nombre: "Hipertensión Arterial",
+        icono: "fas fa-heartbeat",
+        color: "#dc2626",
+        recomendaciones: [
+          "✅ Dieta hiposódica (<2g de sodio/día).",
+          "✅ Evitar alimentos procesados, enlatados, embutidos y snacks salados.",
+          "✅ Aumentar potasio natural (plátano, papa, espinaca, aguacate).",
+          "✅ Incluir alimentos ricos en magnesio (nueces, semillas, legumbres).",
+          "✅ Mantener hidratación adecuada (2-3L/día).",
+          "✅ Limitar alcohol y cafeína."
+        ],
+        distribucion: "50% Carbohidratos - 20% Proteínas - 30% Grasas"
+      },
+      gastritis: {
+        nombre: "Gastritis",
+        icono: "fas fa-stomach",
+        color: "#ca8a04",
+        recomendaciones: [
+          "✅ Evitar alimentos irritantes (picantes, ácidos, café, alcohol, fritos).",
+          "✅ Fraccionar comidas en 5-6 tomas pequeñas al día.",
+          "✅ Priorizar cocciones suaves (hervido, al vapor, al horno sin grasa).",
+          "✅ Masticar bien y comer lentamente.",
+          "✅ Evitar acostarse inmediatamente después de comer.",
+          "✅ Incluir alimentos protectores (avena, plátano, manzana, yogur natural)."
+        ],
+        distribucion: "50% Carbohidratos - 20% Proteínas - 30% Grasas"
+      },
+      hipotiroidismo: {
+        nombre: "Hipotiroidismo",
+        icono: "fas fa-snowflake",
+        color: "#2563eb",
+        recomendaciones: [
+          "✅ Aporte adecuado de yodo (pescado, mariscos, sal yodada).",
+          "✅ Incluir selenio (nueces de Brasil, huevos, pescado).",
+          "✅ Cocinar crucíferas (brócoli, coliflor, repollo) para reducir bociógenos.",
+          "✅ Evitar exceso de soja y derivados sin cocinar.",
+          "✅ Controlar fibra para evitar interferencia con medicación.",
+          "✅ Tomar levotiroxina en ayunas y esperar 30-60 min antes de comer."
+        ],
+        distribucion: "45% Carbohidratos - 25% Proteínas - 30% Grasas"
+      },
+      hipertiroidismo: {
+        nombre: "Hipertiroidismo",
+        icono: "fas fa-fire",
+        color: "#ea580c",
+        recomendaciones: [
+          "✅ Aumentar calorías para compensar metabolismo acelerado.",
+          "✅ Priorizar proteínas de alta calidad para prevenir pérdida muscular.",
+          "✅ Incluir alimentos ricos en calcio y vitamina D (lácteos, sardinas, huevo).",
+          "✅ Hidratación constante (riesgo de deshidratación).",
+          "✅ Evitar cafeína y estimulantes.",
+          "✅ Pequeñas comidas frecuentes para mantener energía."
+        ],
+        distribucion: "50% Carbohidratos - 30% Proteínas - 20% Grasas"
+      },
+      obesidad: {
+        nombre: "Obesidad",
+        icono: "fas fa-weight",
+        color: "#be123c",
+        recomendaciones: [
+          "✅ Dieta hipocalórica personalizada (déficit de 500-1000 kcal/día).",
+          "✅ Priorizar alimentos de baja densidad energética (verduras, frutas, proteínas magras).",
+          "✅ Control de porciones y horarios de comida.",
+          "✅ Evitar ultraprocesados, azúcares añadidos y grasas saturadas.",
+          "✅ Aumentar fibra para saciedad (avena, legumbres, vegetales).",
+          "✅ Combinar con actividad física regular (150 min/semana)."
+        ],
+        distribucion: "40% Carbohidratos - 30% Proteínas - 30% Grasas"
+      },
+      sindrome_metabolico: {
+        nombre: "Síndrome Metabólico",
+        icono: "fas fa-balance-scale",
+        color: "#7c2d12",
+        recomendaciones: [
+          "✅ Dieta baja en azúcares simples y carbohidratos refinados.",
+          "✅ Aumentar fibra soluble (avena, lino, legumbres, manzana).",
+          "✅ Priorizar grasas saludables (aguacate, aceite de oliva, frutos secos).",
+          "✅ Control de porciones y horarios regulares.",
+          "✅ Ejercicio aeróbico + fuerza (mínimo 150 min/semana).",
+          "✅ Reducción de peso gradual (5-10% del peso inicial)."
+        ],
+        distribucion: "40% Carbohidratos - 30% Proteínas - 30% Grasas"
+      }
+    };
+
+    // Manejar envío del formulario
+    document.getElementById("enfermedades-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const selectedOptions = Array.from(document.getElementById("enfermedades").selectedOptions);
+      const kcal = parseInt(document.getElementById("kcal").value);
+
+      if (selectedOptions.length === 0) {
+        alert("⚠️ Por favor selecciona al menos una enfermedad.");
+        return;
+      }
+
+      if (isNaN(kcal) || kcal < 1000 || kcal > 4000) {
+        alert("⚠️ Por favor ingresa un valor válido de calorías (1000-4000).");
+        return;
+      }
+
+      // Mostrar resultado
+      const resultadoDiv = document.getElementById("resultado");
+      resultadoDiv.style.display = "block";
+      resultadoDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      // Mostrar enfermedades seleccionadas
+      const enfermedadesDiv = document.getElementById("enfermedades-seleccionadas");
+      enfermedadesDiv.innerHTML = "";
+      selectedOptions.forEach(option => {
+        const key = option.value;
+        const info = recomendacionesDB[key];
+        if (info) {
+          const span = document.createElement("span");
+          span.className = "enfermedad-tag";
+          span.style.backgroundColor = info.color + "20";
+          span.style.color = info.color;
+          span.innerHTML = `<i class="${info.icono}"></i> ${info.nombre}`;
+          enfermedadesDiv.appendChild(span);
+        }
+      });
+
+      // Mostrar calorías
+      document.getElementById("calorias-mostradas").textContent = kcal.toLocaleString();
+
+      // Generar recomendaciones
+      const recomendacionesDiv = document.getElementById("recomendaciones-contenido");
+      recomendacionesDiv.innerHTML = "";
+
+      selectedOptions.forEach(option => {
+        const key = option.value;
+        const info = recomendacionesDB[key];
+        if (info) {
+          const section = document.createElement("div");
+          section.className = "recomendacion-section";
+          section.innerHTML = `
+            <h5><i class="${info.icono}" style="color: ${info.color};"></i> ${info.nombre}</h5>
+            <p><strong>Distribución macronutrientes sugerida:</strong> ${info.distribucion}</p>
+            <div class="mt-3">
+              ${info.recomendaciones.map(rec => `<p><i class="fas fa-check-circle text-success"></i> ${rec}</p>`).join('')}
+            </div>
+          `;
+          recomendacionesDiv.appendChild(section);
+        }
+      });
+
+      // Mostrar botón de enviar a planificador
+      document.getElementById("enviarDieta").style.display = "inline-block";
+
+      // Guardar datos para el planificador (simulado)
+      document.getElementById("enviarDieta").onclick = function(e) {
+        e.preventDefault();
+        const enfermedades = selectedOptions.map(opt => opt.value);
+        alert(`✅ Enviando al planificador:\n- Enfermedades: ${enfermedades.join(', ')}\n- Calorías: ${kcal} kcal/día\n\n(En un sistema real, esto enviaría los datos al módulo de planificación de dietas)`);
+      };
+    });
+  </script>
 </body>
 </html>
