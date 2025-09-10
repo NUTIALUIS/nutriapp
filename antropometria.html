@@ -2,54 +2,225 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Antropometría - NutriApp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>📋 Evaluación Antropométrica - Consultorio ObstNut</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <style>
+    body {
+      background: linear-gradient(135deg, #e0f7fa, #f1f8e9);
+      min-height: 100vh;
+      padding-top: 20px;
+    }
+    .card {
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+      border: 0;
+      border-radius: 16px;
+    }
+    .card-header {
+      background: linear-gradient(90deg, #4caf50, #8bc34a);
+      color: white;
+      font-weight: 600;
+      border-radius: 16px 16px 0 0 !important;
+    }
+    .form-label {
+      font-weight: 500;
+      color: #2e4053;
+    }
+    .btn-primary {
+      background: #4caf50;
+      border: none;
+      padding: 12px 24px;
+      font-weight: 600;
+      border-radius: 10px;
+    }
+    .btn-primary:hover {
+      background: #388e3c;
+      transform: translateY(-2px);
+    }
+    .resultado-card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      margin-top: 25px;
+      display: none;
+    }
+    .somatotipo-tag {
+      font-size: 1.3rem;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 50px;
+      display: inline-block;
+      margin: 10px 0;
+    }
+    .btn-imprimir {
+      background: #2196f3;
+      border: none;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+    .alert {
+      border-radius: 10px;
+    }
+    .input-group-text {
+      background: #f5f5f5;
+    }
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: #666;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
 <body>
-  <div class="container mt-4">
-    <h2>Antropometría y Somatotipo</h2>
-    <form id="antropometria-form">
-      <div class="mb-3">
-        <label for="tricipital" class="form-label">Pliegue cutáneo tricipital (mm)</label>
-        <input type="number" id="tricipital" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="subescapular" class="form-label">Pliegue cutáneo subescapular (mm)</label>
-        <input type="number" id="subescapular" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="bicipital" class="form-label">Pliegue cutáneo bicipital (mm)</label>
-        <input type="number" id="bicipital" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="suprailíaco" class="form-label">Pliegue cutáneo suprailíaco (mm)</label>
-        <input type="number" id="suprailíaco" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="abdominal" class="form-label">Pliegue cutáneo abdominal (mm)</label>
-        <input type="number" id="abdominal" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="muslo" class="form-label">Pliegue del muslo anterior (mm)</label>
-        <input type="number" id="muslo" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="pantorrilla" class="form-label">Pliegue cutáneo de pantorrilla (mm)</label>
-        <input type="number" id="pantorrilla" class="form-control" required />
-      </div>
-      <div class="mb-3">
-        <label for="iliocristal" class="form-label">Pliegue cutáneo iliocristal (mm)</label>
-        <input type="number" id="iliocristal" class="form-control" required />
-      </div>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-header text-center py-4">
+            <h2 class="mb-0">📋 Evaluación Antropométrica</h2>
+            <p class="mb-0 opacity-75">Determinación de Somatotipo Nutricional</p>
+          </div>
+          <div class="card-body p-4">
 
-      <button type="submit" class="btn btn-primary">Calcular Somatotipo</button>
-    </form>
+            <div class="alert alert-info" role="alert">
+              <strong>ℹ️ Instrucciones:</strong> Ingresa las medidas en milímetros (mm) tomadas con el plicómetro.
+            </div>
 
-    <div id="resultado" class="mt-4"></div>
+            <form id="antropometria-form">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="tricipital" class="form-label">Pliegue tricipital (mm)</label>
+                  <div class="input-group">
+                    <span class="input-group-text">📏</span>
+                    <input type="number" step="0.1" min="0" id="tricipital" class="form-control" placeholder="Ej: 12.5" required />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="subescapular" class="form-label">Pliegue subescapular (mm)</label>
+                  <div class="input-group">
+                    <span class="input-group-text">📏</span>
+                    <input type="number" step="0.1" min="0" id="subescapular" class="form-control" placeholder="Ej: 15.0" required />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="bicipital" class="form-label">Pliegue bicipital (mm)</label>
+                  <div class="input-group">
+                    <span class="input-group-text">📏</span>
+                    <input type="number" step="0.1" min="0" id="bicipital" class="form-control" placeholder="Ej: 8.2" required />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="suprailíaco" class="form-label">Pliegue suprailíaco (mm)</label>
+                  <div class="input-group">
+                    <span class="input-group-text">📏</span>
+                    <input type="number" step="0.1" min="0" id="suprailíaco" class="form-control" placeholder="Ej: 20.3" required />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="abdominal" class="form-label">Pliegue abdominal (mm)</label>
+                  <div class="input-group">
+                    <span class="input-group-text">📏</span>
+                    <input type="number" step="0.1" min="0" id="abdominal" class="form-control" placeholder="Ej: 25.0" required />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="muslo" class="form-label">Pliegue del muslo (mm)</label>
+                  <div class="input-group">
+                    <span class="input-group-text">📏</span>
+                    <input type="number" step="0.1" min="0" id="muslo" class="form-control" placeholder="Ej: 18.7" required />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="pantorrilla" class="form-label">Pliegue de pantorrilla (mm)</label>
+                  <div class="input-group">
+                    <span class="input-group-text">📏</span>
+                    <input type="number" step="0.1" min="0" id="pantorrilla" class="form-control" placeholder="Ej: 14.2" required />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="iliocristal" class="form-label">Pliegue iliocristal (mm)</label>
+                  <div class="input-group">
+                    <span class="input-group-text">📏</span>
+                    <input type="number" step="0.1" min="0" id="iliocristal" class="form-control" placeholder="Ej: 16.8" required />
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary btn-lg">
+                  🧮 Calcular Somatotipo
+                </button>
+              </div>
+            </form>
+
+            <!-- Resultado -->
+            <div id="resultado" class="resultado-card">
+              <h4 class="text-center mb-4">📊 Resultado de la Evaluación</h4>
+              <div class="text-center mb-4">
+                <span id="somatotipo-tag" class="somatotipo-tag bg-success text-white"></span>
+              </div>
+              <div id="detalle-somatotipo" class="mb-4"></div>
+              <div class="text-center">
+                <button onclick="window.print()" class="btn btn-imprimir">
+                  🖨️ Imprimir Resultado
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="mt-5">
+      <p>© 2025 Consultorio ObstNut — Atención nutricional gratuita y personalizada</p>
+    </footer>
   </div>
 
-  <script type="module" src="antropometria.js"></script>
+  <script>
+    document.getElementById('antropometria-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Obtener valores
+      const tricipital = parseFloat(document.getElementById('tricipital').value);
+      const subescapular = parseFloat(document.getElementById('subescapular').value);
+      const bicipital = parseFloat(document.getElementById('bicipital').value);
+      const suprailiaco = parseFloat(document.getElementById('suprailíaco').value);
+      const abdominal = parseFloat(document.getElementById('abdominal').value);
+      const muslo = parseFloat(document.getElementById('muslo').value);
+      const pantorrilla = parseFloat(document.getElementById('pantorrilla').value);
+      const iliocristal = parseFloat(document.getElementById('iliocristal').value);
+
+      // Sumar todos los pliegues
+      const sumaPliegues = tricipital + subescapular + bicipital + suprailiaco + abdominal + muslo + pantorrilla + iliocristal;
+
+      // Lógica simplificada de somatotipo (puedes ajustarla según tu método)
+      let somatotipo, descripcion;
+
+      if (sumaPliegues < 80) {
+        somatotipo = "ECTOMORFO";
+        descripcion = "📌 <strong>Características:</strong> Metabolismo rápido, dificultad para ganar peso/masa muscular.<br>💡 <strong>Recomendación:</strong> Aumentar ingesta calórica, proteínas y entrenamiento de fuerza.";
+      } else if (sumaPliegues >= 80 && sumaPliegues <= 140) {
+        somatotipo = "MESOMORFO";
+        descripcion = "📌 <strong>Características:</strong> Constitución atlética, gana músculo y pierde grasa con facilidad.<br>💡 <strong>Recomendación:</strong> Mantener equilibrio nutricional y actividad física regular.";
+      } else {
+        somatotipo = "ENDOMORFO";
+        descripcion = "📌 <strong>Características:</strong> Tendencia a acumular grasa, metabolismo más lento.<br>💡 <strong>Recomendación:</strong> Control calórico, ejercicio aeróbico y distribución de macronutrientes.";
+      }
+
+      // Mostrar resultado
+      document.getElementById('somatotipo-tag').textContent = somatotipo;
+      document.getElementById('detalle-somatotipo').innerHTML = descripcion;
+      document.getElementById('resultado').style.display = 'block';
+
+      // Scroll suave al resultado
+      document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
 </body>
 </html>
