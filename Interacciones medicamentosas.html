@@ -1,191 +1,393 @@
-<!DOCTYPE html><html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Interacciones Medicamentosas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💊 Interacciones Medicamentosas - Consultorio ObstNut</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f8f8f8;
-      padding: 2rem;
-      color: #222;
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    h1 {
-      color: #004080;
+    .card {
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+      border: 0;
+      border-radius: 16px;
+      overflow: hidden;
     }
-    textarea {
-      width: 100%;
-      max-width: 600px;
-      height: 100px;
-      font-size: 1rem;
-      padding: 0.5rem;
-    }
-    button {
-      margin-top: 1rem;
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-      cursor: pointer;
-      background-color: #004080;
+    .card-header {
+      background: linear-gradient(90deg, #004080, #007acc);
       color: white;
+      font-weight: 600;
+      padding: 25px;
+      text-align: center;
+    }
+    .btn-primary {
+      background: #004080;
       border: none;
-      border-radius: 5px;
+      padding: 12px 24px;
+      font-weight: 600;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
     }
-    .resultado {
-      margin-top: 2rem;
+    .btn-primary:hover {
+      background: #002d5c;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0,64,128,0.3);
     }
-    .medicamento {
-      background: #fff;
-      padding: 1rem;
-      margin-bottom: 1rem;
+    .medicamento-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      margin: 15px 0;
       border-left: 5px solid #007acc;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
     }
-    .medicamento p {
-      margin: 0.3rem 0;
-      line-height: 1.4;
+    .medicamento-card:hover {
+      transform: translateX(5px);
     }
-    .emoji {
-      font-weight: bold;
+    .medicamento-card h5 {
+      color: #004080;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    table {
-      margin-top: 3rem;
-      border-collapse: collapse;
-      width: 100%;
-      max-width: 600px;
+    .medicamento-card p {
+      margin: 8px 0;
+      line-height: 1.6;
+      color: #495057;
     }
-    table, th, td {
-      border: 1px solid #ccc;
+    .badge-warning {
+      background: #ffc107;
+      color: #212529;
+      font-weight: 500;
     }
-    th, td {
-      padding: 0.5rem;
-      text-align: left;
-    }
-    th {
-      background-color: #004080;
+    .badge-success {
+      background: #28a745;
       color: white;
+      font-weight: 500;
+    }
+    .table-container {
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      margin-top: 40px;
+    }
+    .table thead {
+      background: #004080;
+      color: white;
+    }
+    .table th, .table td {
+      vertical-align: middle;
+      padding: 15px;
+    }
+    .btn-imprimir {
+      background: #2196f3;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 500;
+      margin-top: 20px;
+    }
+    .alert-custom {
+      border-radius: 10px;
+      font-weight: 500;
+    }
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: #666;
+      font-size: 0.9rem;
+      padding: 20px;
+    }
+    .search-box {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .search-box textarea {
+      min-height: 120px;
+      font-size: 1.1rem;
+      border-radius: 12px;
+      border: 2px solid #dee2e6;
+    }
+    .search-box textarea:focus {
+      border-color: #007acc;
+      box-shadow: 0 0 0 3px rgba(0,122,204,0.2);
     }
   </style>
 </head>
-<body> <h1>  Interacciones Medicamentosas</h1>
-  <p>Escribe hasta 10 medicamentos separados por comas:</p>
-  <textarea id="entrada" placeholder="Ej: enalapril, warfarina, metformina"></textarea><br>
-  <button onclick="mostrarInteracciones()">Mostrar interacciones</button> <div class="resultado" id="resultado"></div> <h2>  Base de Datos Nutricional</h2>
-  </table> <script>
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="card">
+          <div class="card-header">
+            <h1 class="mb-2">💊 Interacciones Medicamentosas</h1>
+            <p class="mb-0 opacity-75">Herramienta para profesionales de la salud - Consultorio ObstNut</p>
+          </div>
+          <div class="card-body p-4">
+            <div class="alert alert-info alert-custom" role="alert">
+              <i class="fas fa-info-circle"></i> <strong>Instrucciones:</strong> Escribe hasta 10 medicamentos separados por comas. Puedes usar nombres parciales (ej: "enala" para enalapril).
+            </div>
+
+            <div class="search-box">
+              <textarea id="entrada" class="form-control" placeholder="Ej: enalapril, warfarina, metformina"></textarea>
+              <div class="text-center mt-3">
+                <button onclick="mostrarInteracciones()" class="btn btn-primary">
+                  <i class="fas fa-search"></i> Analizar Interacciones
+                </button>
+                <button onclick="imprimirResultados()" class="btn btn-imprimir ms-2">
+                  <i class="fas fa-print"></i> Imprimir
+                </button>
+              </div>
+            </div>
+
+            <div class="resultado mt-4" id="resultado"></div>
+          </div>
+        </div>
+
+        <!-- Base de Datos Nutricional -->
+        <div class="table-container mt-5">
+          <h2 class="text-center mb-4">📋 Base de Datos de Interacciones Medicamentosas</h2>
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th><i class="fas fa-capsules"></i> Medicamento</th>
+                  <th><i class="fas fa-exclamation-triangle"></i> Interacción</th>
+                  <th><i class="fas fa-lightbulb"></i> Recomendación</th>
+                </tr>
+              </thead>
+              <tbody id="tabla-interacciones">
+                <!-- Se llenará con JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p><i class="fas fa-heart" style="color:#004080;"></i> © 2025 Consultorio ObstNut — Atención médica y nutricional integral</p>
+    </footer>
+  </div>
+
+  <script>
     const interacciones = {
-  "enalapril": {
-    interaccion: "No combinar con alimentos muy ricos en potasio (ej. plátano, aguacate excesivo)",
-    recomendacion: "Moderar potasio, controlar función renal, evitar suplementos sin control"
-  },
-  "warfarina": {
-    interaccion: "Vitamina K en alimentos (ej. brócoli, coliflor, espinaca) puede reducir su efecto anticoagulante",
-    recomendacion: "Mantener ingesta constante de vitamina K, evitar fluctuaciones bruscas"
-  },
-  "metformina": {
-    interaccion: "Alcohol puede potenciar acidosis láctica, y reducir absorción de B12",
-    recomendacion: "Evitar alcohol; considerar suplementar vitamina B12 a largo plazo"
-  },
-  "atorvastatina": {
-    interaccion: "Jugo de toronja (pomelo) puede aumentar concentración plasmática y toxicidad hepática",
-    recomendacion: "Evitar pomelo; controlar función hepática"
-  },
-  "furosemida": {
-    interaccion: "Riesgo de deshidratación con ingesta reducida de agua o alta de sal",
-    recomendacion: "Mantener hidratación adecuada; controlar electrolitos"
-  },
-  "levotiroxina": {
-    interaccion: "Café, lácteos, soja, suplementos de hierro o calcio reducen su absorción",
-    recomendacion: "Tomar en ayunas; esperar 30–60 minutos antes del desayuno"
-  },
-  "simvastatina": {
-    interaccion: "Pomelo (toronja) puede aumentar toxicidad",
-    recomendacion: "Evitar jugo de toronja; tomar en la noche"
-  },
-  "losartán": {
-    interaccion: "Exceso de potasio en alimentos (plátano, sustitutos de sal) puede causar hiperpotasemia",
-    recomendacion: "Controlar potasio; monitorear función renal"
-  },
-  "omeprazol": {
-    interaccion: "Reducción de absorción de B12 y hierro a largo plazo",
-    recomendacion: "Controlar niveles en tratamientos prolongados"
-  },
-  "clopidogrel": {
-    interaccion: "Alcohol y ajo en exceso aumentan riesgo de sangrado",
-    recomendacion: "Evitar alcohol y suplementos herbales anticoagulantes"
-  },
-  "prednisona": {
-    interaccion: "Aumenta glucosa, puede afectar absorción de calcio",
-    recomendacion: "Dieta baja en azúcares simples, adecuada en calcio y proteínas"
-  },
-  "glimepirida": {
-    interaccion: "Alcohol puede inducir hipoglucemia severa",
-    recomendacion: "Evitar alcohol; tomar con alimentos"
-  },
-  "insulina nph": {
-    interaccion: "Ayuno o consumo excesivo de alcohol puede causar hipoglucemia",
-    recomendacion: "Nunca omitir comidas; evitar alcohol"
-  },
-  "gabapentina": {
-    interaccion: "Alcohol potencia efectos sedantes",
-    recomendacion: "Evitar alcohol; tomar con alimentos si hay molestias gástricas"
-  },
-  "fenitoína": {
-    interaccion: "Lácteos, calcio, alcohol reducen absorción y potencia",
-    recomendacion: "Tomar separado de lácteos; evitar alcohol"
-  },
-  "ciprofloxacina": {
-    interaccion: "Leche, calcio y antiácidos disminuyen su absorción",
-    recomendacion: "Evitar tomar con lácteos o suplementos minerales"
-  },
-  "doxiciclina": {
-    interaccion: "Lácteos y minerales interfieren con absorción",
-    recomendacion: "No tomar con leche; evitar suplementos durante tratamiento"
-  },
-  "sertralina": {
-    interaccion: "Alcohol intensifica efectos depresores del sistema nervioso",
-    recomendacion: "Evitar alcohol; tomar con alimentos si hay náuseas"
-  },
-  "fluoxetina": {
-    interaccion: "Alcohol y cafeína pueden generar ansiedad o taquicardia",
-    recomendacion: "Limitar cafeína; evitar alcohol"
-  },
-  "carvedilol": {
-    interaccion: "Alcohol puede causar hipotensión severa",
-    recomendacion: "Evitar alcohol; tomar con comida para reducir hipotensión"
-  },
-  "espironolactona": {
-    interaccion: "Alimentos ricos en potasio pueden causar hiperpotasemia",
-    recomendacion: "Evitar plátano, aguacate, tomate en exceso"
-  }
-};
- 
+      "enalapril": {
+        interaccion: "No combinar con alimentos muy ricos en potasio (ej. plátano, aguacate excesivo)",
+        recomendacion: "Moderar potasio, controlar función renal, evitar suplementos sin control"
+      },
+      "warfarina": {
+        interaccion: "Vitamina K en alimentos (ej. brócoli, coliflor, espinaca) puede reducir su efecto anticoagulante",
+        recomendacion: "Mantener ingesta constante de vitamina K, evitar fluctuaciones bruscas"
+      },
+      "metformina": {
+        interaccion: "Alcohol puede potenciar acidosis láctica, y reducir absorción de B12",
+        recomendacion: "Evitar alcohol; considerar suplementar vitamina B12 a largo plazo"
+      },
+      "atorvastatina": {
+        interaccion: "Jugo de toronja (pomelo) puede aumentar concentración plasmática y toxicidad hepática",
+        recomendacion: "Evitar pomelo; controlar función hepática"
+      },
+      "furosemida": {
+        interaccion: "Riesgo de deshidratación con ingesta reducida de agua o alta de sal",
+        recomendacion: "Mantener hidratación adecuada; controlar electrolitos"
+      },
+      "levotiroxina": {
+        interaccion: "Café, lácteos, soja, suplementos de hierro o calcio reducen su absorción",
+        recomendacion: "Tomar en ayunas; esperar 30–60 minutos antes del desayuno"
+      },
+      "simvastatina": {
+        interaccion: "Pomelo (toronja) puede aumentar toxicidad",
+        recomendacion: "Evitar jugo de toronja; tomar en la noche"
+      },
+      "losartán": {
+        interaccion: "Exceso de potasio en alimentos (plátano, sustitutos de sal) puede causar hiperpotasemia",
+        recomendacion: "Controlar potasio; monitorear función renal"
+      },
+      "omeprazol": {
+        interaccion: "Reducción de absorción de B12 y hierro a largo plazo",
+        recomendacion: "Controlar niveles en tratamientos prolongados"
+      },
+      "clopidogrel": {
+        interaccion: "Alcohol y ajo en exceso aumentan riesgo de sangrado",
+        recomendacion: "Evitar alcohol y suplementos herbales anticoagulantes"
+      },
+      "prednisona": {
+        interaccion: "Aumenta glucosa, puede afectar absorción de calcio",
+        recomendacion: "Dieta baja en azúcares simples, adecuada en calcio y proteínas"
+      },
+      "glimepirida": {
+        interaccion: "Alcohol puede inducir hipoglucemia severa",
+        recomendacion: "Evitar alcohol; tomar con alimentos"
+      },
+      "insulina nph": {
+        interaccion: "Ayuno o consumo excesivo de alcohol puede causar hipoglucemia",
+        recomendacion: "Nunca omitir comidas; evitar alcohol"
+      },
+      "gabapentina": {
+        interaccion: "Alcohol potencia efectos sedantes",
+        recomendacion: "Evitar alcohol; tomar con alimentos si hay molestias gástricas"
+      },
+      "fenitoína": {
+        interaccion: "Lácteos, calcio, alcohol reducen absorción y potencia",
+        recomendacion: "Tomar separado de lácteos; evitar alcohol"
+      },
+      "ciprofloxacina": {
+        interaccion: "Leche, calcio y antiácidos disminuyen su absorción",
+        recomendacion: "Evitar tomar con lácteos o suplementos minerales"
+      },
+      "doxiciclina": {
+        interaccion: "Lácteos y minerales interfieren con absorción",
+        recomendacion: "No tomar con leche; evitar suplementos durante tratamiento"
+      },
+      "sertralina": {
+        interaccion: "Alcohol intensifica efectos depresores del sistema nervioso",
+        recomendacion: "Evitar alcohol; tomar con alimentos si hay náuseas"
+      },
+      "fluoxetina": {
+        interaccion: "Alcohol y cafeína pueden generar ansiedad o taquicardia",
+        recomendacion: "Limitar cafeína; evitar alcohol"
+      },
+      "carvedilol": {
+        interaccion: "Alcohol puede causar hipotensión severa",
+        recomendacion: "Evitar alcohol; tomar con comida para reducir hipotensión"
+      },
+      "espironolactona": {
+        interaccion: "Alimentos ricos en potasio pueden causar hiperpotasemia",
+        recomendacion: "Evitar plátano, aguacate, tomate en exceso"
+      }
+    };
+
+    // Llenar la tabla de base de datos al cargar
+    document.addEventListener('DOMContentLoaded', function() {
+      const tbody = document.getElementById('tabla-interacciones');
+      for (const [medicamento, info] of Object.entries(interacciones)) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><strong>${medicamento.charAt(0).toUpperCase() + medicamento.slice(1)}</strong></td>
+          <td>${info.interaccion}</td>
+          <td>${info.recomendacion}</td>
+        `;
+        tbody.appendChild(row);
+      }
+    });
+
+    // Función para buscar coincidencias parciales
+    function buscarMedicamento(parcial) {
+      parcial = parcial.toLowerCase().trim();
+      for (const key in interacciones) {
+        if (key.toLowerCase().includes(parcial)) {
+          return { key, info: interacciones[key] };
+        }
+      }
+      return null;
+    }
+
     function mostrarInteracciones() {
       const entrada = document.getElementById("entrada").value.toLowerCase().split(",").map(m => m.trim());
       const resultado = document.getElementById("resultado");
       resultado.innerHTML = "";
 
       if (entrada.length > 10) {
-        resultado.innerHTML = "<p style='color:red;'>  Solo puedes ingresar hasta 10 medicamentos.</p>";
+        resultado.innerHTML = `
+          <div class="alert alert-danger alert-custom">
+            <i class="fas fa-exclamation-triangle"></i> Solo puedes ingresar hasta 10 medicamentos.
+          </div>
+        `;
         return;
       }
 
+      if (entrada.length === 1 && entrada[0] === "") {
+        resultado.innerHTML = `
+          <div class="alert alert-warning alert-custom">
+            <i class="fas fa-info-circle"></i> Por favor, ingresa al menos un medicamento.
+          </div>
+        `;
+        return;
+      }
+
+      let encontrados = 0;
+      let noEncontrados = 0;
+
       entrada.forEach(nombre => {
-        const info = interacciones[nombre];
-        if (info) {
+        if (nombre === "") return;
+
+        const match = buscarMedicamento(nombre);
+        
+        if (match) {
+          encontrados++;
           resultado.innerHTML += `
-            <div class="medicamento">
-              <p class="emoji">  Medicamento: <strong>${nombre.charAt(0).toUpperCase() + nombre.slice(1)}</strong></p>
-              <p class="emoji">  Interacción: ${info.interaccion}</p>
-              <p class="emoji">  Recomendación: ${info.recomendacion}</p>
+            <div class="medicamento-card">
+              <h5><i class="fas fa-capsules"></i> ${match.key.charAt(0).toUpperCase() + match.key.slice(1)}</h5>
+              <p><strong><i class="fas fa-exclamation-triangle"></i> Interacción:</strong> ${match.info.interaccion}</p>
+              <p><strong><i class="fas fa-lightbulb"></i> Recomendación:</strong> ${match.info.recomendacion}</p>
+              <div class="mt-2">
+                <span class="badge badge-success">Encontrado</span>
+              </div>
             </div>
           `;
         } else {
+          noEncontrados++;
           resultado.innerHTML += `
-            <div class="medicamento">
-              <p class="emoji">  Medicamento: <strong>${nombre}</strong></p>
-              <p style="color:orange;">  No se encontró información de interacción para este medicamento.</p>
+            <div class="medicamento-card">
+              <h5><i class="fas fa-capsules"></i> ${nombre.charAt(0).toUpperCase() + nombre.slice(1)}</h5>
+              <p class="text-warning">
+                <i class="fas fa-exclamation-circle"></i> No se encontró información de interacción para este medicamento.
+              </p>
+              <div class="mt-2">
+                <span class="badge badge-warning">No encontrado</span>
+              </div>
             </div>
           `;
         }
       });
+
+      // Resumen
+      if (entrada.filter(n => n !== "").length > 0) {
+        resultado.innerHTML = `
+          <div class="alert alert-info alert-custom">
+            <i class="fas fa-search"></i> Resultado de búsqueda: ${encontrados} encontrados, ${noEncontrados} no encontrados.
+          </div>
+        ` + resultado.innerHTML;
+      }
     }
-  </script></body>
+
+    function imprimirResultados() {
+      window.print();
+    }
+
+    // Estilos para impresión
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @media print {
+        body {
+          background: white;
+          padding: 20px;
+        }
+        .btn-imprimir, .search-box button, footer {
+          display: none !important;
+        }
+        .card, .table-container {
+          box-shadow: none !important;
+          border: 1px solid #ddd;
+        }
+        .medicamento-card {
+          page-break-inside: avoid;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
 </html>
