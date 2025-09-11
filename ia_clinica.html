@@ -133,10 +133,11 @@
                 <div id="analisis-ia"></div>
               </div>
 
+              <!-- Botón corregido: quitamos href="#" y usamos onclick directo -->
               <div class="text-center">
-                <a href="#" id="btnVerAlimentos" class="btn btn-alimentos">
+                <button id="btnVerAlimentos" class="btn btn-alimentos" style="display:none;" onclick="irAAlimentos()">
                   <i class="fas fa-apple-alt"></i> Ver Alimentos Permitidos y Prohibidos
-                </a>
+                </button>
               </div>
             </div>
 
@@ -193,13 +194,14 @@
       localStorage.setItem('enfermedades_ia', JSON.stringify(enfermedades));
       localStorage.setItem('notas_ia', notas);
 
-      // Mostrar botón de alimentos
+      // Mostrar botón de alimentos (¡ahora es un botón, no un enlace!)
       document.getElementById('btnVerAlimentos').style.display = 'inline-block';
-      document.getElementById('btnVerAlimentos').onclick = function(e) {
-        e.preventDefault();
-        window.location.href = 'alimentos_permitidos_prohibidos.html';
-      };
     });
+
+    // Función separada para ir a alimentos
+    function irAAlimentos() {
+      window.location.href = 'alimentos_permitidos_prohibidos.html';
+    }
 
     function generarAnalisisIA(enfermedades, notas) {
       let analisis = '';
