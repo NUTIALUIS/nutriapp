@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧠 IA Clínica Nutricional - Consultorio ObstNut</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f5f3ff, #ede9fe);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .card {
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+      border: 0;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .card-header {
+      background: linear-gradient(90deg, #7c2d12, #dc2626);
+      color: white;
+      font-weight: 600;
+      padding: 25px;
+      text-align: center;
+    }
+    .btn-primary {
+      background: #dc2626;
+      border: none;
+      padding: 14px 32px;
+      font-weight: 600;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      background: #b91c1c;
+      transform: translateY(-3px);
+    }
+    .resultado-card {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      margin-top: 30px;
+      display: none;
+    }
+    .badge-enfermedad {
+      background: #fca5a5;
+      color: #991b1b;
+      padding: 6px 12px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      margin: 5px;
+      font-weight: 500;
+    }
+    .btn-alimentos {
+      background: #7c2d12;
+      border: none;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-top: 20px;
+      display: none;
+    }
+    .alert-ia {
+      background: #fef3c7;
+      border-left: 5px solid #d97706;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9">
+        <div class="card">
+          <div class="card-header">
+            <h1 class="mb-2">🧠 IA Clínica Nutricional</h1>
+            <p class="mb-0 opacity-75">Asistente inteligente para recomendaciones clínicas</p>
+          </div>
+          <div class="card-body p-4">
+
+            <form id="ia-form">
+              <div class="mb-4">
+                <label for="enfermedades" class="form-label">
+                  <i class="fas fa-disease"></i> Selecciona enfermedades del paciente
+                </label>
+                <select id="enfermedades" class="form-select" multiple required size="8">
+                  <option value="diabetes">Diabetes Mellitus</option>
+                  <option value="hta">Hipertensión Arterial</option>
+                  <option value="gastritis">Gastritis</option>
+                  <option value="erc">Enfermedad Renal Crónica</option>
+                  <option value="higado_graso">Hígado Graso</option>
+                  <option value="hipotiroidismo">Hipotiroidismo</option>
+                  <option value="obesidad">Obesidad</option>
+                  <option value="sindrome_metabolico">Síndrome Metabólico</option>
+                  <option value="cancer">Cáncer</option>
+                  <option value="celiaquia">Celiaquía</option>
+                </select>
+                <div class="form-text">
+                  <i class="fas fa-mouse-pointer"></i> Usa Ctrl/Cmd para seleccionar múltiples.
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="notas" class="form-label">
+                  <i class="fas fa-sticky-note"></i> Notas adicionales (opcional)
+                </label>
+                <textarea id="notas" class="form-control" rows="3" placeholder="Ej: Alergia al maní, vegetariana, etc."></textarea>
+              </div>
+
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg">
+                  <i class="fas fa-robot"></i> Generar Informe Clínico con IA
+                </button>
+              </div>
+            </form>
+
+            <div id="resultado" class="resultado-card">
+              <h3 class="text-center mb-4">📋 Informe Clínico Generado por IA</h3>
+              
+              <div id="enfermedades-seleccionadas" class="mb-4"></div>
+              
+              <div class="alert-ia">
+                <h5><i class="fas fa-brain"></i> Análisis de IA Nutricional</h5>
+                <div id="analisis-ia"></div>
+              </div>
+
+              <div class="text-center">
+                <a href="#" id="btnVerAlimentos" class="btn btn-alimentos">
+                  <i class="fas fa-apple-alt"></i> Ver Alimentos Permitidos y Prohibidos
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('ia-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const selectedOptions = Array.from(document.getElementById('enfermedades').selectedOptions);
+      const notas = document.getElementById('notas').value;
+
+      if (selectedOptions.length === 0) {
+        alert('⚠️ Por favor selecciona al menos una enfermedad.');
+        return;
+      }
+
+      const enfermedades = selectedOptions.map(opt => opt.value);
+      const nombres = {
+        'diabetes': 'Diabetes Mellitus',
+        'hta': 'Hipertensión Arterial',
+        'gastritis': 'Gastritis',
+        'erc': 'Enfermedad Renal Crónica',
+        'higado_graso': 'Hígado Graso',
+        'hipotiroidismo': 'Hipotiroidismo',
+        'obesidad': 'Obesidad',
+        'sindrome_metabolico': 'Síndrome Metabólico',
+        'cancer': 'Cáncer',
+        'celiaquia': 'Celiaquía'
+      };
+
+      // Mostrar enfermedades seleccionadas
+      const enfermedadesDiv = document.getElementById('enfermedades-seleccionadas');
+      enfermedadesDiv.innerHTML = '<h5><i class="fas fa-disease"></i> Enfermedades diagnosticadas:</h5>';
+      enfermedades.forEach(e => {
+        const span = document.createElement('span');
+        span.className = 'badge-enfermedad';
+        span.innerHTML = nombres[e] || e;
+        enfermedadesDiv.appendChild(span);
+      });
+
+      // Generar análisis de IA
+      const analisis = generarAnalisisIA(enfermedades, notas);
+      document.getElementById('analisis-ia').innerHTML = analisis;
+
+      // Mostrar resultado
+      document.getElementById('resultado').style.display = 'block';
+
+      // Guardar en localStorage
+      localStorage.setItem('enfermedades_ia', JSON.stringify(enfermedades));
+      localStorage.setItem('notas_ia', notas);
+
+      // Mostrar botón de alimentos
+      document.getElementById('btnVerAlimentos').style.display = 'inline-block';
+      document.getElementById('btnVerAlimentos').onclick = function(e) {
+        e.preventDefault();
+        window.location.href = 'alimentos_permitidos_prohibidos.html';
+      };
+    });
+
+    function generarAnalisisIA(enfermedades, notas) {
+      let analisis = '';
+
+      if (enfermedades.includes('diabetes')) {
+        analisis += '<p>• <strong>Diabetes:</strong> Priorizar carbohidratos de bajo índice glucémico. Distribuir ingesta en 5-6 comidas diarias. Monitorear niveles de glucosa pre y postprandial.</p>';
+      }
+      if (enfermedades.includes('hta')) {
+        analisis += '<p>• <strong>Hipertensión:</strong> Restricción de sodio (<2g/día). Aumentar potasio natural (plátano, papa, espinaca). Evitar procesados y enlatados.</p>';
+      }
+      if (enfermedades.includes('gastritis')) {
+        analisis += '<p>• <strong>Gastritis:</strong> Evitar irritantes (picantes, café, alcohol). Fraccionar comidas. Preferir cocciones suaves (hervido, al vapor).</p>';
+      }
+      if (enfermedades.includes('erc')) {
+        analisis += '<p>• <strong>ERC:</strong> Restricción de proteínas, potasio, fósforo y líquidos según estadio. Evitar alimentos ricos en fósforo (lácteos, frutos secos).</p>';
+      }
+      if (enfermedades.includes('higado_graso')) {
+        analisis += '<p>• <strong>Hígado Graso:</strong> Evitar alcohol y azúcares añadidos. Priorizar grasas saludables (aguacate, aceite de oliva). Control de peso gradual.</p>';
+      }
+      if (enfermedades.includes('obesidad')) {
+        analisis += '<p>• <strong>Obesidad:</strong> Déficit calórico personalizado (500-1000 kcal/día). Aumentar fibra y proteínas para saciedad. Combinar con actividad física regular.</p>';
+      }
+      if (enfermedades.includes('cancer')) {
+        analisis += '<p>• <strong>Cáncer:</strong> Priorizar alimentos ricos en antioxidantes. Aumentar proteínas para mantener masa muscular. Fraccionar comidas si hay náuseas.</p>';
+      }
+      if (enfermedades.includes('celiaquia')) {
+        analisis += '<p>• <strong>Celiaquía:</strong> ELIMINAR TOTALMENTE gluten (trigo, cebada, centeno). Leer etiquetas cuidadosamente. Evitar contaminación cruzada.</p>';
+      }
+
+      if (notas) {
+        analisis += `<p><strong>Notas adicionales:</strong> ${notas}</p>`;
+      }
+
+      if (!analisis) {
+        analisis = '<p>La IA no encontró recomendaciones específicas para las condiciones seleccionadas.</p>';
+      }
+
+      return analisis;
+    }
+  </script>
+</body>
+</html>
