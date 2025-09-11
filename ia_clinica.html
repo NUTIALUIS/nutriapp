@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📋 Gestión Clínica Nutricional - Consultorio ObstNut</title>
+  <title>🧠 IA Clínica Nutricional - Consultorio ObstNut</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
-      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      background: linear-gradient(135deg, #f5f3ff, #ede9fe);
       min-height: 100vh;
       padding: 2rem 1rem;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -18,387 +18,227 @@
       border: 0;
       border-radius: 16px;
       overflow: hidden;
-      margin-bottom: 30px;
     }
     .card-header {
-      background: linear-gradient(90deg, #2563eb, #3b82f6);
+      background: linear-gradient(90deg, #7c2d12, #dc2626);
       color: white;
       font-weight: 600;
       padding: 25px;
       text-align: center;
     }
-    .grupo-card {
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      margin-bottom: 30px;
-    }
-    .grupo-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 20px;
-      padding-bottom: 15px;
-      border-bottom: 2px solid #f0f0f0;
-    }
-    .grupo-header i {
-      font-size: 1.5rem;
-    }
-    .grupo-header h3 {
-      margin: 0;
-      color: #1e40af;
-    }
-    .form-check {
-      margin: 10px 0;
-    }
-    .form-check-label {
-      font-size: 1.05rem;
-      padding: 8px 12px;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .form-check-input:checked + .form-check-label {
-      background: #dbeafe;
-      border: 2px solid #3b82f6;
-      color: #1e40af;
-      font-weight: 500;
-    }
-    .protocolo-card {
-      background: #ecfdf5;
-      border-left: 5px solid #10b981;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.1);
-      margin: 20px 0;
-      transition: transform 0.3s ease;
-    }
-    .protocolo-card:hover {
-      transform: translateY(-3px);
-    }
-    .protocolo-card h5 {
-      color: #065f46;
-      margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .protocolo-card p {
-      margin: 0;
-      line-height: 1.7;
-      color: #374151;
-      font-size: 1.05rem;
-    }
     .btn-primary {
-      background: #2563eb;
+      background: #dc2626;
       border: none;
-      padding: 12px 24px;
+      padding: 14px 32px;
       font-weight: 600;
-      border-radius: 10px;
+      border-radius: 12px;
       font-size: 1.1rem;
       transition: all 0.3s ease;
     }
     .btn-primary:hover {
-      background: #1d4ed8;
-      transform: translateY(-2px);
+      background: #b91c1c;
+      transform: translateY(-3px);
     }
-    .btn-imprimir {
-      background: #2196f3;
+    .resultado-card {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      margin-top: 30px;
+      display: none;
+    }
+    .badge-enfermedad {
+      background: #fca5a5;
+      color: #991b1b;
+      padding: 6px 12px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      margin: 5px;
+      font-weight: 500;
+    }
+    .btn-alimentos {
+      background: #7c2d12;
       border: none;
       color: white;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: 500;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1rem;
       margin-top: 20px;
+      display: none;
     }
-    .search-box {
-      max-width: 600px;
-      margin: 20px auto 30px;
-    }
-    .search-box input {
-      width: 100%;
-      padding: 12px 20px;
-      border-radius: 12px;
-      border: 2px solid #e5e7eb;
-      font-size: 1.1rem;
-    }
-    .search-box input:focus {
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-    }
-    footer {
-      margin-top: 40px;
-      text-align: center;
-      color: #666;
-      font-size: 0.9rem;
+    .alert-ia {
+      background: #fef3c7;
+      border-left: 5px solid #d97706;
       padding: 20px;
-    }
-    @media print {
-      body {
-        background: white;
-        padding: 20px;
-      }
-      .btn-imprimir, .search-box, footer {
-        display: none !important;
-      }
-      .card, .grupo-card, .protocolo-card {
-        box-shadow: none !important;
-        border: 1px solid #ddd;
-      }
-      .protocolo-card {
-        page-break-inside: avoid;
-        margin: 15px 0;
-      }
+      border-radius: 8px;
+      margin: 20px 0;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-lg-10">
+      <div class="col-lg-9">
         <div class="card">
           <div class="card-header">
-            <h1 class="mb-2">📋 Gestión Clínica Nutricional</h1>
-            <p class="mb-0 opacity-75">Herramienta para profesionales - Consultorio ObstNut</p>
+            <h1 class="mb-2">🧠 IA Clínica Nutricional</h1>
+            <p class="mb-0 opacity-75">Asistente inteligente para recomendaciones clínicas</p>
           </div>
           <div class="card-body p-4">
-            <div class="alert alert-info" role="alert">
-              <i class="fas fa-info-circle"></i> <strong>Selecciona una o más condiciones</strong> para ver los protocolos nutricionales recomendados.
-            </div>
 
-            <!-- Búsqueda -->
-            <div class="search-box">
-              <input type="text" id="busqueda" placeholder="Buscar condición (ej: diabetes, embarazo, deportistas...)" oninput="filtrarCondiciones()">
-            </div>
+            <form id="ia-form">
+              <div class="mb-4">
+                <label for="enfermedades" class="form-label">
+                  <i class="fas fa-disease"></i> Selecciona enfermedades del paciente
+                </label>
+                <select id="enfermedades" class="form-select" multiple required size="8">
+                  <option value="diabetes">Diabetes Mellitus</option>
+                  <option value="hta">Hipertensión Arterial</option>
+                  <option value="gastritis">Gastritis</option>
+                  <option value="erc">Enfermedad Renal Crónica</option>
+                  <option value="higado_graso">Hígado Graso</option>
+                  <option value="hipotiroidismo">Hipotiroidismo</option>
+                  <option value="obesidad">Obesidad</option>
+                  <option value="sindrome_metabolico">Síndrome Metabólico</option>
+                  <option value="cancer">Cáncer</option>
+                  <option value="celiaquia">Celiaquía</option>
+                </select>
+                <div class="form-text">
+                  <i class="fas fa-mouse-pointer"></i> Usa Ctrl/Cmd para seleccionar múltiples.
+                </div>
+              </div>
 
-            <!-- Sección de selección -->
-            <div id="seleccion"></div>
+              <div class="mb-4">
+                <label for="notas" class="form-label">
+                  <i class="fas fa-sticky-note"></i> Notas adicionales (opcional)
+                </label>
+                <textarea id="notas" class="form-control" rows="3" placeholder="Ej: Alergia al maní, vegetariana, etc."></textarea>
+              </div>
 
-            <!-- Botón de imprimir -->
-            <div class="text-center mt-4">
-              <button onclick="imprimirProtocolos()" class="btn btn-imprimir">
-                <i class="fas fa-print"></i> Imprimir Protocolos Seleccionados
-              </button>
-            </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg">
+                  <i class="fas fa-robot"></i> Generar Informe Clínico con IA
+                </button>
+              </div>
+            </form>
 
-            <!-- Protocolos -->
-            <hr class="my-5">
-            <h2 class="text-center mb-4">🎯 Protocolos Nutricionales Sugeridos</h2>
-            <div id="protocolos">
-              <div class="alert alert-secondary text-center">
-                Selecciona una o más condiciones para ver sugerencias...
+            <div id="resultado" class="resultado-card">
+              <h3 class="text-center mb-4">📋 Informe Clínico Generado por IA</h3>
+              
+              <div id="enfermedades-seleccionadas" class="mb-4"></div>
+              
+              <div class="alert-ia">
+                <h5><i class="fas fa-brain"></i> Análisis de IA Nutricional</h5>
+                <div id="analisis-ia"></div>
+              </div>
+
+              <div class="text-center">
+                <a href="#" id="btnVerAlimentos" class="btn btn-alimentos">
+                  <i class="fas fa-apple-alt"></i> Ver Alimentos Permitidos y Prohibidos
+                </a>
               </div>
             </div>
+
           </div>
         </div>
       </div>
     </div>
-
-    <footer>
-      <p><i class="fas fa-heart" style="color:#2563eb;"></i> © 2025 Consultorio ObstNut — Atención nutricional personalizada</p>
-    </footer>
   </div>
 
   <script>
-    const condiciones = {
-      cronicas: {
-        nombre: "Enfermedades Crónicas",
-        icono: "fas fa-heartbeat",
-        color: "#ef4444",
-        items: [
-          "Hipertensión arterial",
-          "Diabetes tipo 1",
-          "Diabetes tipo 2",
-          "Dislipidemias",
-          "Obesidad / Sobrepeso",
-          "Insuficiencia renal crónica",
-          "Síndrome metabólico",
-          "Hipotiroidismo",
-          "Hígado graso",
-        ]
-      },
-      agudas: {
-        nombre: "Condiciones Agudas",
-        icono: "fas fa-bolt",
-        color: "#f59e0b",
-        items: [
-          "Gastritis",
-          "Colitis",
-          "SII",
-          "Alergias / Intolerancias",
-          "Estreñimiento",
-          "Diarrea",
-          "Migrañas alimentarias",
-        ]
-      },
-      postquirurgicos: {
-        nombre: "Postquirúrgicos",
-        icono: "fas fa-briefcase-medical",
-        color: "#8b5cf6",
-        items: [
-          "Cirugía de vesícula",
-          "Apendicectomía",
-          "Fracturas / trauma",
-          "Cirugías ginecológicas",
-          "Cirugía bariátrica",
-        ]
-      },
-      especiales: {
-        nombre: "Grupos Especiales",
-        icono: "fas fa-users",
-        color: "#10b981",
-        items: [
-          "Embarazo / Lactancia",
-          "Niños",
-          "Adultos mayores",
-          "Deportistas - Fútbol",
-          "Deportistas - Pesas",
-          "Deportistas - Básquet",
-          "Deportistas - Tenis",
-          "Condiciones neurológicas - Parkinson",
-          "Condiciones neurológicas - Alzheimer",
-          "Condiciones neurológicas - Esclerosis múltiple",
-          "Condiciones neurológicas - Parálisis cerebral",
-        ]
-      },
-    };
+    document.getElementById('ia-form').addEventListener('submit', function(e) {
+      e.preventDefault();
 
-    const protocolos = {
-      "Hipertensión arterial": "Dieta hiposódica, rica en potasio natural, evitar embutidos y enlatados. Fomentar consumo de frutas, verduras y lácteos bajos en grasa.",
-      "Diabetes tipo 1": "Control estricto de carbohidratos, ajuste de insulina según indicación médica. Distribución equilibrada de comidas y snacks.",
-      "Diabetes tipo 2": "Dieta hipoglucémica, controlar índice glucémico, repartir carbohidratos complejos. Priorizar fibra y proteínas magras.",
-      "Dislipidemias": "Reducir grasas saturadas y trans, aumentar omega 3 (pescado, nueces) y fibra soluble (avena, legumbres). Cocinar sin aceite.",
-      "Obesidad / Sobrepeso": "Dieta hipocalórica personalizada, fomentar actividad física diaria, control de porciones y horarios. Evitar ultraprocesados.",
-      "Insuficiencia renal crónica": "Dieta baja en potasio, fósforo y proteínas según estadio. Restringir líquidos si aplica. Evitar sal y alimentos procesados.",
-      "Síndrome metabólico": "Dieta balanceada baja en azúcares simples, aumentar fibra, control de peso y actividad física regular. Priorizar alimentos integrales.",
-      "Hipotiroidismo": "Aporte adecuado de yodo (pescado, mariscos) y selenio (nueces, huevos). Evitar exceso de soja y crucíferas crudas. Cocinar verduras.",
-      "Hígado graso": "Dieta baja en grasas saturadas y azúcares, controlar peso gradual, evitar alcohol completamente. Aumentar vegetales y fibra.",
-      "Gastritis": "Evitar alimentos ácidos, picantes, café y alcohol. Fraccionar comidas en 5-6 tomas diarias. Priorizar cocciones suaves (hervido, al vapor).",
-      "Colitis": "Evitar irritantes (picantes, grasas, cafeína), aumentar fibra soluble (avena, manzana cocida), fraccionar comidas. Hidratación constante.",
-      "SII": "Dieta baja en FODMAP inicialmente, control de estrés, registro de síntomas y alimentos desencadenantes. Reintroducción gradual guiada.",
-      "Alergias / Intolerancias": "Identificar y excluir alimentos desencadenantes, leer etiquetas cuidadosamente, usar sustitutos adecuados. Educación nutricional continua.",
-      "Estreñimiento": "Aumentar fibra gradualmente (frutas con cáscara, verduras, cereales integrales), hidratación adecuada (2-3L/día), fomentar actividad física diaria.",
-      "Diarrea": "Hidratación oral con sales, dieta astringente (arroz blanco, zanahoria cocida, manzana asada), evitar irritantes y lácteos enteros. Reposición de electrolitos.",
-      "Migrañas alimentarias": "Identificar desencadenantes (quesos añejos, chocolate, glutamato), evitar alimentos procesados, fraccionar comidas. Mantener horarios regulares.",
-      "Cirugía de vesícula": "Dieta baja en grasas inicialmente, fraccionar comidas en 5-6 tomas, evitar irritantes y fritos. Aumentar fibra gradualmente.",
-      "Apendicectomía": "Dieta blanda postquirúrgica (arroz, pollo desmenuzado, purés), reintroducción gradual de fibra, hidratación constante. Evitar alimentos pesados.",
-      "Fracturas / trauma": "Aporte adecuado de proteínas (1.2-1.5g/kg), calcio (lácteos, sardinas) y vitamina D (sol, suplementos). Hidratación y alimentos antiinflamatorios.",
-      "Cirugías ginecológicas": "Dieta equilibrada rica en hierro (carne, lentejas, espinacas) y proteínas, control de estreñimiento con fibra y agua. Evitar flatulentos.",
-      "Cirugía bariátrica": "Dieta fraccionada en 6 comidas, control estricto de proteínas (60-80g/día), suplementos vitamínicos según indicación. Masticar bien y comer lento.",
-      "Embarazo / Lactancia": "Aporte adecuado de calorías y nutrientes (hierro, ácido fólico, calcio), hidratación (3L/día), control de anemia. Evitar alcohol y cafeína.",
-      "Niños": "Dieta equilibrada con variedad de alimentos, evitar ultraprocesados y azúcares añadidos. Fomentar hábitos saludables en familia. Comidas regulares.",
-      "Adultos mayores": "Dieta equilibrada adaptada a necesidades, buena hidratación (recordatorios), textura adecuada si hay dificultad para masticar. Suplementar si necesario.",
-      "Deportistas - Fútbol": "Alto consumo de carbohidratos complejos (pasta, arroz, patata), hidratación constante antes/durante/después, proteínas para recuperación muscular.",
-      "Deportistas - Pesas": "Aporte elevado de proteínas de calidad (2g/kg), control de carbohidratos según fase, suplementos (creatina, proteína) si es necesario y supervisado.",
-      "Deportistas - Básquet": "Carbohidratos para resistencia (cereales, frutas), snacks pre y post entrenamiento (fruta + yogur), hidratación adecuada con electrolitos.",
-      "Deportistas - Tenis": "Hidratación intensiva (agua + electrolitos), carbohidratos de absorción rápida (frutas) y lenta (cereales), sales minerales durante partidos largos.",
-      "Condiciones neurológicas - Parkinson": "Fraccionar comidas, dieta rica en fibra para estreñimiento, adecuada hidratación. Texturas adecuadas si hay dificultad para tragar.",
-      "Condiciones neurológicas - Alzheimer": "Alimentos fáciles de masticar y digerir, control de textura, supervisar hidratación y consumo. Ambiente tranquilo para comer.",
-      "Condiciones neurológicas - Esclerosis múltiple": "Aporte suficiente de energía, control de peso, vitaminas y minerales clave (D, B12). Fibra para estreñimiento. Hidratación constante.",
-      "Condiciones neurológicas - Parálisis cerebral": "Adaptar consistencia de alimentos (purés, gelatinas), dieta alta en nutrientes densos, prevenir estreñimiento con fibra y agua. Supervisión durante comidas.",
-    };
+      const selectedOptions = Array.from(document.getElementById('enfermedades').selectedOptions);
+      const notas = document.getElementById('notas').value;
 
-    // Renderizar condiciones
-    function renderizarCondiciones() {
-      const seleccionDiv = document.getElementById('seleccion');
-      seleccionDiv.innerHTML = '';
-
-      Object.entries(condiciones).forEach(([key, grupo]) => {
-        const grupoDiv = document.createElement('div');
-        grupoDiv.className = 'grupo-card';
-        
-        const grupoHeader = document.createElement('div');
-        grupoHeader.className = 'grupo-header';
-        grupoHeader.innerHTML = `
-          <i class="${grupo.icono}" style="color: ${grupo.color};"></i>
-          <h3>${grupo.nombre}</h3>
-        `;
-        grupoDiv.appendChild(grupoHeader);
-
-        grupo.items.forEach(cond => {
-          const div = document.createElement('div');
-          div.className = 'form-check';
-          
-          const input = document.createElement('input');
-          input.type = 'checkbox';
-          input.className = 'form-check-input';
-          input.id = `check-${cond.replace(/\s+/g, '-').toLowerCase()}`;
-          input.value = cond;
-          
-          const label = document.createElement('label');
-          label.className = 'form-check-label';
-          label.htmlFor = input.id;
-          label.innerHTML = `
-            <i class="fas fa-prescription-bottle-alt"></i>
-            ${cond}
-          `;
-          
-          input.addEventListener('change', () => mostrarProtocolos());
-          
-          div.appendChild(input);
-          div.appendChild(label);
-          grupoDiv.appendChild(div);
-        });
-
-        seleccionDiv.appendChild(grupoDiv);
-      });
-    }
-
-    // Filtrar condiciones por búsqueda
-    function filtrarCondiciones() {
-      const texto = document.getElementById('busqueda').value.toLowerCase();
-      const checkboxes = document.querySelectorAll('.form-check');
-      
-      checkboxes.forEach(checkbox => {
-        const label = checkbox.querySelector('.form-check-label');
-        const textoCondicion = label.textContent.toLowerCase();
-        
-        if (texto === '' || textoCondicion.includes(texto)) {
-          checkbox.style.display = 'block';
-        } else {
-          checkbox.style.display = 'none';
-        }
-      });
-    }
-
-    // Mostrar protocolos
-    function mostrarProtocolos() {
-      const checked = document.querySelectorAll('#seleccion input:checked');
-      const protocolosDiv = document.getElementById('protocolos');
-      protocolosDiv.innerHTML = '';
-
-      if (checked.length === 0) {
-        protocolosDiv.innerHTML = `
-          <div class="alert alert-secondary text-center">
-            Selecciona una o más condiciones para ver sugerencias...
-          </div>
-        `;
+      if (selectedOptions.length === 0) {
+        alert('⚠️ Por favor selecciona al menos una enfermedad.');
         return;
       }
 
-      checked.forEach(cb => {
-        const div = document.createElement('div');
-        div.className = 'protocolo-card';
-        div.innerHTML = `
-          <h5><i class="fas fa-clipboard-list"></i> ${cb.value}</h5>
-          <p>${protocolos[cb.value] || 'Protocolo pendiente de actualización.'}</p>
-        `;
-        protocolosDiv.appendChild(div);
+      const enfermedades = selectedOptions.map(opt => opt.value);
+      const nombres = {
+        'diabetes': 'Diabetes Mellitus',
+        'hta': 'Hipertensión Arterial',
+        'gastritis': 'Gastritis',
+        'erc': 'Enfermedad Renal Crónica',
+        'higado_graso': 'Hígado Graso',
+        'hipotiroidismo': 'Hipotiroidismo',
+        'obesidad': 'Obesidad',
+        'sindrome_metabolico': 'Síndrome Metabólico',
+        'cancer': 'Cáncer',
+        'celiaquia': 'Celiaquía'
+      };
+
+      // Mostrar enfermedades seleccionadas
+      const enfermedadesDiv = document.getElementById('enfermedades-seleccionadas');
+      enfermedadesDiv.innerHTML = '<h5><i class="fas fa-disease"></i> Enfermedades diagnosticadas:</h5>';
+      enfermedades.forEach(e => {
+        const span = document.createElement('span');
+        span.className = 'badge-enfermedad';
+        span.innerHTML = nombres[e] || e;
+        enfermedadesDiv.appendChild(span);
       });
-    }
 
-    // Imprimir protocolos
-    function imprimirProtocolos() {
-      window.print();
-    }
+      // Generar análisis de IA
+      const analisis = generarAnalisisIA(enfermedades, notas);
+      document.getElementById('analisis-ia').innerHTML = analisis;
 
-    // Inicializar
-    document.addEventListener('DOMContentLoaded', function() {
-      renderizarCondiciones();
+      // Mostrar resultado
+      document.getElementById('resultado').style.display = 'block';
+
+      // Guardar en localStorage
+      localStorage.setItem('enfermedades_ia', JSON.stringify(enfermedades));
+      localStorage.setItem('notas_ia', notas);
+
+      // Mostrar botón de alimentos
+      document.getElementById('btnVerAlimentos').style.display = 'inline-block';
+      document.getElementById('btnVerAlimentos').onclick = function(e) {
+        e.preventDefault();
+        window.location.href = 'alimentos_permitidos_prohibidos.html';
+      };
     });
+
+    function generarAnalisisIA(enfermedades, notas) {
+      let analisis = '';
+
+      if (enfermedades.includes('diabetes')) {
+        analisis += '<p>• <strong>Diabetes:</strong> Priorizar carbohidratos de bajo índice glucémico. Distribuir ingesta en 5-6 comidas diarias. Monitorear niveles de glucosa pre y postprandial.</p>';
+      }
+      if (enfermedades.includes('hta')) {
+        analisis += '<p>• <strong>Hipertensión:</strong> Restricción de sodio (<2g/día). Aumentar potasio natural (plátano, papa, espinaca). Evitar procesados y enlatados.</p>';
+      }
+      if (enfermedades.includes('gastritis')) {
+        analisis += '<p>• <strong>Gastritis:</strong> Evitar irritantes (picantes, café, alcohol). Fraccionar comidas. Preferir cocciones suaves (hervido, al vapor).</p>';
+      }
+      if (enfermedades.includes('erc')) {
+        analisis += '<p>• <strong>ERC:</strong> Restricción de proteínas, potasio, fósforo y líquidos según estadio. Evitar alimentos ricos en fósforo (lácteos, frutos secos).</p>';
+      }
+      if (enfermedades.includes('higado_graso')) {
+        analisis += '<p>• <strong>Hígado Graso:</strong> Evitar alcohol y azúcares añadidos. Priorizar grasas saludables (aguacate, aceite de oliva). Control de peso gradual.</p>';
+      }
+      if (enfermedades.includes('obesidad')) {
+        analisis += '<p>• <strong>Obesidad:</strong> Déficit calórico personalizado (500-1000 kcal/día). Aumentar fibra y proteínas para saciedad. Combinar con actividad física regular.</p>';
+      }
+      if (enfermedades.includes('cancer')) {
+        analisis += '<p>• <strong>Cáncer:</strong> Priorizar alimentos ricos en antioxidantes. Aumentar proteínas para mantener masa muscular. Fraccionar comidas si hay náuseas.</p>';
+      }
+      if (enfermedades.includes('celiaquia')) {
+        analisis += '<p>• <strong>Celiaquía:</strong> ELIMINAR TOTALMENTE gluten (trigo, cebada, centeno). Leer etiquetas cuidadosamente. Evitar contaminación cruzada.</p>';
+      }
+
+      if (notas) {
+        analisis += `<p><strong>Notas adicionales:</strong> ${notas}</p>`;
+      }
+
+      if (!analisis) {
+        analisis = '<p>La IA no encontró recomendaciones específicas para las condiciones seleccionadas.</p>';
+      }
+
+      return analisis;
+    }
   </script>
 </body>
 </html>
